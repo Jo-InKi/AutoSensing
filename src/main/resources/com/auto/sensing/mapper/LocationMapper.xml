@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="LocationMapper">
+	<cache />
+	<select id="selectLocationList" parameterType="String" resultType="com.auto.sensing.vo.LocationVO">
+		SELECT
+			*
+		FROM location_tb
+		WHERE projectid = #{projectid}
+	</select>
+	
+	<insert id="insertLocation" parameterType="com.auto.sensing.vo.LocationVO">
+		INSERT INTO location_tb
+		(
+			location_sn
+			, location_nm
+			, projectid
+		) VALUES (
+			nextval(location_seq)
+			, #{location_nm}
+			, #{projectid}
+		)
+	</insert>
+	
+	<update id="updateLocation" parameterType="com.auto.sensing.vo.LocationVO">
+		UPDATE location_tb SET
+			location_nm = #{location_nm}
+			, projectid = #{projectid}
+		WHERE location_sn = #{location_sn}
+	</update>
+	
+	<select id="chaeckLocationName" parameterType="com.auto.sensing.vo.LocationVO" resultType="Integer">
+		SELECT
+			COUNT(*) AS CNT
+		FROM location_tb
+		WHERE projectid = #{projectid}
+		AND location_nm = #{location_nm}
+	</select>
+
+</mapper>

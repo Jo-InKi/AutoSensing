@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserMapper">
+	<cache />
+	<select id="checkPassword" parameterType="com.auto.sensing.dto.UserLoginDTO" resultType="com.auto.sensing.vo.UserVO">
+		SELECT
+			*
+		FROM user_tb
+		WHERE userid = #{userid}
+	</select>
+	
+	<select id="selectAllUsers" resultType="com.auto.sensing.vo.UserVO">
+		SELECT
+			*
+		FROM user_tb
+	</select>
+
+	<select id="selectUserListByGrade" resultType="com.auto.sensing.vo.UserVO">
+		SELECT
+			*
+		FROM user_tb
+		<where>
+			<if test="grade != null and grade != ''">
+				AND grade = #{grade}
+			</if>
+		</where>
+	</select>
+
+
+</mapper>

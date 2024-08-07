@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SensorMapper">
+	<select id="selectSensorCompanyAll"
+		resultType="com.auto.sensing.dto.SensorCompanyDTO">
+		SELECT
+			  code
+			, name
+		  FROM
+			code_tb
+		 WHERE class='SensorCompany'
+	</select>
+	<select id="selectCompanySensor" parameterType="String"
+		resultType="com.auto.sensing.dto.SensorCompanyDTO">
+		SELECT
+			  code
+			, name
+		  FROM
+			sensorlist_tb
+		 WHERE sensorcompany = #{company}
+	</select>
+
+	<select id="selectSensorListByProjectID" parameterType="String"
+		resultType="com.auto.sensing.dto.SensorDTO">
+		SELECT
+			sensorid
+			, channel
+			, IFNULL(sensorname, 'default') as sensorname
+			, substring(kind,1,4) as sensorcompany
+			, substring(kind,5,4) as sensorcode
+			, initdate
+			, factor
+			, guidel1max
+			, guidel1min
+			, guidel2max
+			, guidel2min
+			, guidel3max
+			, guidel3min
+			, const1
+			, const2
+			, const3
+			, const4
+			, const5
+			, const6
+			, const7
+			, const8
+			, calcstring
+			, projectid
+			, location_sn
+		FROM
+			sensor_tb
+		<where>
+			<if test="projectid != null and projectid != ''">
+				AND projectid = #{projectid}
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectSensorListLocationSN" parameterType="String"
+		resultType="com.auto.sensing.dto.SensorDTO">
+		SELECT
+			sensorid
+			, channel
+			, IFNULL(sensorname, 'default') as sensorname
+			, substring(kind,1,4) as sensorcompany
+			, substring(kind,5,4) as sensorcode
+			, initdate
+			, factor
+			, guidel1max
+			, guidel1min
+			, guidel2max
+			, guidel2min
+			, guidel3max
+			, guidel3min
+			, const1
+			, const2
+			, const3
+			, const4
+			, const5
+			, const6
+			, const7
+			, const8
+			, calcstring
+			, projectid
+			, location_sn
+		FROM
+			sensor_tb
+		<where>
+			<if test="location_sn != null and location_sn > 0">
+				AND location_sn = #{location_sn}
+			</if>
+		</where>
+	</select>
+	<select id="selectSensor" parameterType="Map"
+		resultType="com.auto.sensing.dto.SensorDTO">
+		SELECT
+			sensorid
+			, channel
+			, IFNULL(sensorname, 'default') as sensorname
+			, initdate
+			, factor
+			, guidel1max
+			, guidel1min
+			, guidel2max
+			, guidel2min
+			, guidel3max
+			, guidel3min
+			, const1
+			, const2
+			, const3
+			, const4
+			, const5
+			, const6
+			, const7
+			, const8
+			, calcstring
+			, projectid
+		FROM
+			sensor_tb
+		<where>
+ 			<if test="sensorid != null and sensorid != ''">
+				AND sensorid = #{sensorid}
+			</if>
+			<if test="channel != null and channel >= 0">
+				AND channel = #{channel}
+			</if>
+			<if test="projectid != null and projectid != ''">
+				AND projectid = #{projectid}
+			</if>
+		</where>
+	</select>
+	<select id="selectSensorReport" parameterType="Map"
+		resultType="com.auto.sensing.dto.SensorReportDTO">
+			SELECT
+				TB.keytime as time
+				, AVG(TB.aiv) as aiv
+			FROM (
+				SELECT
+					date_format(time, '%Y-%m-%d %H:00') as keytime
+					,time
+					,aiv
+				FROM sensor_report
+				WHERE sensorid = #{sensorid}
+				AND channel = #{channel}
+				AND <![CDATA[time >= #{sdatetime}]]>
+				AND <![CDATA[time <= #{edatetime}]]>
+			) TB
+			GROUP BY TB.keytime
+			ORDER BY TB.keytime ASC
+	</select>
+	<insert id="insertSensor" parameterType="com.auto.sensing.dto.SensorDTO">
+	INSERT INTO sensor_tb
+	(
+            sensorid
+            , channel
+            , sensorname
+            , initdate
+            , factor
+            , guidel1max
+            , guidel1min
+            , guidel2max
+            , guidel2min
+            , guidel3max
+            , guidel3min
+            , const1
+            , const2
+            , const3
+            , const4
+            , const5
+            , const6
+            , const7
+            , const8
+			, calcstring
+			, projectid
+			, location_sn
+			
+	)
+	values (
+            #{sensorid}
+            , #{channel}
+            , #{sensorname}
+            , #{initdate}
+            , #{factor}
+            , #{guidel1max}
+            , #{guidel1min}
+            , #{guidel2max}
+            , #{guidel2min}
+            , #{guidel3max}
+            , #{guidel3min}
+            , #{const1}
+            , #{const2}
+            , #{const3}
+            , #{const4}
+            , #{const5}
+            , #{const6}
+            , #{const7}
+            , #{const8}
+            , #{calcstring}
+	        , #{projectid}
+			, #{location_sn}
+	)
+	</insert>
+	<update id="updateSensor" parameterType="com.auto.sensing.dto.SensorDTO">
+	UPDATE sensor_tb SET
+              sensorname      = #{sensorname}
+            , initdate      = #{initdate}
+            , factor        = #{factor}
+            , guidel1max    = #{guidel1max}
+            , guidel1min    = #{guidel1min}
+            , guidel2max    = #{guidel2max}
+            , guidel2min    = #{guidel2min}
+            , guidel3max    = #{guidel3max}
+            , guidel3min    = #{guidel3min}
+            , const1        = #{const1}
+            , const2        = #{const2}
+            , const3        = #{const3}
+            , const4        = #{const4}
+            , const5        = #{const5}
+            , const6        = #{const6}
+            , const7        = #{const7}
+            , const8        = #{const8}
+            , userid        = #{userid}
+			, calcstring	= #{calcstring}
+	WHERE	projectid		= #{projectid}
+	  AND	sensorid		= #{sensorid}
+	  AND	channel			= #{channel}
+	</update>
+	
+	<delete id = "deleteSensor" parameterType="Map">
+	DELETE FROM sensor_tb
+	 WHERE	projectid = #{projectid}
+	   AND	sensorid = #{sensorid}
+	   AND	channel = #{channel}
+	 </delete>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProjectManMapper">
+	<cache />
+	<select id="selectProjectListByuserid" parameterType="String" resultType="com.auto.sensing.vo.ProjectManVO">
+		SELECT
+			userid
+			, projectid
+			, projectname
+		FROM project_man_tb
+		WHERE userid = #{userid}
+	</select>
+	
+	<select id="selectProjectListAssign" parameterType="String" resultType="com.auto.sensing.vo.ProjectVO">
+		SELECT
+			T2.*
+		FROM project_man_tb T1 RIGHT JOIN project_tb T2
+		ON T1.userid = #{userid} AND T1.projectid = T2.projectid
+		WHERE T1.userid IS NOT NULL
+	</select>
+	
+	<select id="selectProjectListNotAssign" parameterType="String" resultType="com.auto.sensing.vo.ProjectVO">
+		SELECT
+			T2.*
+		FROM project_man_tb T1 RIGHT JOIN project_tb T2
+		ON T1.userid = #{userid} AND T1.projectid = T2.projectid
+		WHERE T1.userid IS NULL
+	</select>
+	
+	<insert id="assignProject" parameterType="com.auto.sensing.vo.ProjectManVO">
+		INSERT INTO project_man_tb
+		(
+			userid
+			, projectid
+			, projectname
+		) VALUES (
+			#{userid}
+			, #{projectid}
+			, #{projectname}
+		)
+	</insert>
+
+	<delete id="deassignProject" parameterType="com.auto.sensing.vo.ProjectManVO">
+		DELETE FROM project_man_tb
+		WHERE userid = #{userid}
+		AND projectid = #{projectid}
+	</delete>
+</mapper>

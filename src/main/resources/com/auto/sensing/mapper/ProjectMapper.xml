@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProjectMapper">
+	<select id="selectProjectList" resultType="com.auto.sensing.vo.ProjectVO">
+		SELECT 
+			  projectid
+			, projectname
+			, company
+			, address
+			, mappath
+			, emname
+			, phone
+			, email
+			, userid
+		FROM project_tb
+		<where>
+			<if test="userid != null and userid != ''">
+				AND userid = #{userid}
+			</if>
+		</where>	
+	</select>
+	
+	<select id="selectProjectListByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="com.auto.sensing.vo.ProjectVO">
+		SELECT 
+			  *
+		FROM project_tb
+		<trim prefix="where" prefixOverrides="AND">
+			<if test="search.keyword != null and search.keyword !=''">
+				<if test="search.keywordType == 'userid'">
+					userid LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+				<if test="search.keywordType == 'projectid'">
+					projectid LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+				<if test="search.keywordType == 'projectname'">
+					projectname LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+				<if test="search.keywordType == 'company'">
+					company LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+			</if>
+		</trim>
+		ORDER BY projectid ASC
+		LIMIT ${amount} OFFSET ${(pageNum-1)*amount};
+	</select>
+
+	<select id="selectProjectCntByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="Integer">
+		SELECT 
+			  COUNT(*)
+		FROM project_tb
+		<trim prefix="where" prefixOverrides="AND">
+			<if test="search.keyword != null and search.keyword !=''">
+				<if test="search.keywordType == 'userid'">
+					userid LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+				<if test="search.keywordType == 'projectid'">
+					projectid LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+				<if test="search.keywordType == 'projectname'">
+					projectname LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+				<if test="search.keywordType == 'company'">
+					company LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+			</if>
+		</trim>
+	</select>
+	
+	<select id="selectProject" parameterType="Map" resultType="com.auto.sensing.vo.ProjectVO">
+		SELECT
+			  projectid
+			, projectname
+			, company
+			, address
+			, mappath
+			, emname
+			, phone
+			, email
+		FROM
+			project_tb
+		<where>
+			<if test="projectid != null and projectid != ''">
+				AND projectid = #{projectid}
+			</if>
+			<if test="projectname != null and projectname != ''">
+				AND projectname = #{projectname}
+			</if>
+			<if test="emname != null and emname != ''">
+				AND emname = #{emname}
+			</if>
+		</where>
+						
+	</select>
+	<insert id="insertProjectRegister" parameterType="com.auto.sensing.vo.ProjectVO">
+	INSERT INTO project_tb
+	(		
+			  projectid
+			, projectname
+			, company
+			, address
+			, mappath
+			, emname
+			, phone
+			, email
+	) value (
+			  #{projectid}
+			, #{projectname}
+			, #{company}
+			, #{address}
+			, #{mappath}
+			, #{emname}
+			, #{phone}
+			, #{email}
+			)
+	</insert>
+	<update id="updateProject" parameterType="com.auto.sensing.vo.ProjectVO">
+	UPDATE project_tb SET
+	          projectname = #{projectname}
+	        , company = #{company}
+	        , address = #{address}
+	        , mappath = IFNULL(#{mappath}, mappath)
+	        , emname = #{emname}
+	        , phone = #{phone}
+	        , email = #{email}
+	WHERE
+	        projectid = #{projectid}
+	</update>
+	<delete id="deleteProject" parameterType="Map">
+	DELETE	FROM	project_tb
+	 WHERE	projectid=#{projectid}
+	</delete>
+</mapper>

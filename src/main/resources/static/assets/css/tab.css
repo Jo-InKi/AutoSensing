@@ -1,0 +1,85 @@
+/* 
+    ---------------------------------------------------------------------------------------------
+        tab setting
+    ---------------------------------------------------------------------------------------------
+*/
+.nav {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-wrap: wrap;
+}
+.tabsWrapper{
+  padding: var(--size_20) var(--size_20) 0;
+  align-items: center;
+}
+.tabsWrapper .tabTitle{
+  font-weight: 600;
+}
+.nav-tabs {
+  border-radius: var(--size_20);
+  background-color: var(--color_e);
+  padding: var(--size_5);
+}
+
+.nav-tabs .nav-link {
+  display: block;
+  border-radius: var(--size_20);
+  padding: var(--size_5) var(--size_20);
+}
+
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus {
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link.disabled {
+  color: #858796;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  font-weight: 600;
+  background-color: var(--color_8);
+  color: var(--color_f)
+}
+
+.tabWrap{}
+.tabWrap .tabs{
+  display: flex;
+  gap: var(--size_10);
+}
+
+.tabWrap .tabs .tab-link.current,
+.tabWrap .tab-content{
+  border: 1px solid var(--color_8);
+}
+.tabWrap .tabs .tab-link{
+  border: 1px solid var(--color_e);
+  color: var(--color_c);
+  border-radius: var(--size_10) var(--size_10) 0 0;
+  padding: var(--size_10) var(--size_20);
+  border-collapse: collapse;
+}
+.tabWrap .tabs .tab-link:hover{
+  cursor: pointer;
+  color: var(--color_8);
+}
+.tabWrap .tabs .tab-link.current{
+  border-bottom: none;
+  font-weight: 600;
+  color: var(--color_8);
+}
+
+.tabWrap .tab-content{
+  padding: var(--size_20);
+  display: none;
+  border-radius: 0 var(--size_10) var(--size_10) var(--size_10);
+}
+.tabWrap .tab-content.current{
+  display: block;
+}
