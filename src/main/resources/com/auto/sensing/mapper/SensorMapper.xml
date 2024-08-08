@@ -56,6 +56,38 @@
 		</where>
 	</select>
 	
+	<select id="selectSensorListByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="com.auto.sensing.dto.SensorDTO">
+		SELECT
+			*
+		FROM sensor_tb
+		<trim prefix="where" prefixOverrides="AND">
+			<if test="search.keyword != null and search.keyword !=''">
+				<if test="search.keywordType == 'sensorid'">
+					sensorid LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+			</if>
+		</trim>
+		ORDER BY sensorid, channel ASC
+		LIMIT ${amount} OFFSET ${(pageNum-1)*amount};
+	</select>
+
+
+	<select id="selectSensorCntByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="Integer">
+		SELECT
+			COUNT(*)
+		FROM sensor_tb
+		<trim prefix="where" prefixOverrides="AND">
+			<if test="search.keyword != null and search.keyword !=''">
+				<if test="search.keywordType == 'sensorid'">
+					sensorid LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+			</if>
+		</trim>
+		ORDER BY sensorid, channel ASC
+		LIMIT ${amount} OFFSET ${(pageNum-1)*amount};
+	</select>
+
+	
 	<select id="selectSensorListLocationSN" parameterType="String"
 		resultType="com.auto.sensing.dto.SensorDTO">
 		SELECT

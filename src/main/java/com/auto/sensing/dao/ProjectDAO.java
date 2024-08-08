@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
+import com.auto.sensing.dto.ProjectDTO;
 import com.auto.sensing.vo.PageVO;
 import com.auto.sensing.vo.ProjectVO;
 
@@ -44,7 +45,7 @@ public class ProjectDAO {
 		return sqlSession.delete("ProjectMapper.deleteProject", param);
 	}
 	
-	public List <ProjectVO> selectProjectListByPage (PageVO page)	{
+	public List <ProjectDTO> selectProjectListByPage (PageVO page)	{
 		return sqlSession.selectList("ProjectMapper.selectProjectListByPage", page);
 	}
 	

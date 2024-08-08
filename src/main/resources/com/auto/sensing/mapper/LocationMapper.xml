@@ -10,6 +10,13 @@
 		WHERE projectid = #{projectid}
 	</select>
 	
+	<select id="selectLocation" parameterType="Integer" resultType="com.auto.sensing.vo.LocationVO">
+		SELECT
+			*
+		FROM location_tb
+		WHERE location_sn = #{location_sn}
+	</select>
+	
 	<insert id="insertLocation" parameterType="com.auto.sensing.vo.LocationVO">
 		INSERT INTO location_tb
 		(
@@ -36,6 +43,35 @@
 		FROM location_tb
 		WHERE projectid = #{projectid}
 		AND location_nm = #{location_nm}
+	</select>
+	
+	<select id="selectLocationListByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="com.auto.sensing.dto.LocationDTO">
+		SELECT
+			TB1.*
+			,TB2.projectname 
+		FROM location_tb TB1 LEFT JOIN project_tb TB2
+		ON TB1.projectid = TB2.projectid
+		<trim prefix="where" prefixOverrides="AND">
+			<if test="search.keyword != null and search.keyword !=''">
+				<if test="search.keywordType == 'userid'">
+					userid = #{search.keyword}
+				</if>
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectLocationCntByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="Integer">
+		SELECT
+			COUNT(*)
+		FROM location_tb TB1 LEFT JOIN project_tb TB2
+		ON TB1.projectid = TB2.projectid
+		<trim prefix="where" prefixOverrides="AND">
+			<if test="search.keyword != null and search.keyword !=''">
+				<if test="search.keywordType == 'userid'">
+					userid = #{search.keyword}
+				</if>
+			</if>
+		</trim>
 	</select>
 
 </mapper>

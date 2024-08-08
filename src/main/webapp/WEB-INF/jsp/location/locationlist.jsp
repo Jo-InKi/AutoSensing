@@ -29,7 +29,6 @@
 			<div align="left" class="text-gray-900">총 ${pageMaker.realEnd}페이지 중 ${pageMaker.page.pageNum}</div>
 				<p style="color: red;">${msg.message }</p>
 		<hr />
-			${commonValue }
 			<span style="color:green;">${successMsg}</span>
 					<div class="table-responsive">
 						<table class="table table-bordered" id="dataTable">
@@ -55,7 +54,7 @@
 										name="rowCheck"></td>
 										<td data-label="번호" class="text-left">${location_index.index + 1}</td>
 										<td nowrap style="overflow:hidden;" data-label="프로젝트명">
-											<a href="/project/edit?projectid=${project.projectid}&page=${pageMaker.page.pageNum}&amount=${pageMaker.page.amount}">${location.location_nm}</a>
+											<a href="/location/edit?location_sn=${location.location_sn}">${location.location_nm}</a>
 										</td>
 										<td nowrap style="overflow:hidden;" data-label="위치명">${location.projectname}</td>
 

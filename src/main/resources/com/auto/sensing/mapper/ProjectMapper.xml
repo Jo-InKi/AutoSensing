@@ -20,23 +20,25 @@
 		</where>	
 	</select>
 	
-	<select id="selectProjectListByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="com.auto.sensing.vo.ProjectVO">
-		SELECT 
-			  *
-		FROM project_tb
+	<select id="selectProjectListByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="com.auto.sensing.dto.ProjectDTO">
+		SELECT
+			t1.*
+			,t2.username
+		FROM project_tb t1 LEFT JOIN user_tb t2
+		ON t1.userid = t2.userid
 		<trim prefix="where" prefixOverrides="AND">
 			<if test="search.keyword != null and search.keyword !=''">
 				<if test="search.keywordType == 'userid'">
-					userid LIKE CONCAT('%', #{search.keyword}, '%')
+					t1.userid LIKE CONCAT('%', #{search.keyword}, '%')
 				</if>
 				<if test="search.keywordType == 'projectid'">
-					projectid LIKE CONCAT('%', #{search.keyword}, '%')
+					t1.projectid LIKE CONCAT('%', #{search.keyword}, '%')
 				</if>
 				<if test="search.keywordType == 'projectname'">
-					projectname LIKE CONCAT('%', #{search.keyword}, '%')
+					t1.projectname LIKE CONCAT('%', #{search.keyword}, '%')
 				</if>
 				<if test="search.keywordType == 'company'">
-					company LIKE CONCAT('%', #{search.keyword}, '%')
+					t1.company LIKE CONCAT('%', #{search.keyword}, '%')
 				</if>
 			</if>
 		</trim>
@@ -102,6 +104,7 @@
 			, emname
 			, phone
 			, email
+			, userid
 	) value (
 			  #{projectid}
 			, #{projectname}
@@ -111,6 +114,7 @@
 			, #{emname}
 			, #{phone}
 			, #{email}
+			, #{userid}
 			)
 	</insert>
 	<update id="updateProject" parameterType="com.auto.sensing.vo.ProjectVO">

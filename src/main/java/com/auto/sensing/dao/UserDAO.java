@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.auto.sensing.dto.UserLoginDTO;
+import com.auto.sensing.vo.PageVO;
 import com.auto.sensing.vo.UserVO;
 
 @Repository("UserDAO")
@@ -26,5 +27,13 @@ public class UserDAO {
     
     public List<UserVO> selectUserListByGrade (String grade) {
     	return sqlSession.selectList("UserMapper.selectUserListByGrade", grade);
+    }
+    
+    public List<UserVO> selectUserListByPage (PageVO page) {
+    	return sqlSession.selectList("UserMapper.selectUserListByPage", page);
+    }
+    
+    public int selectUserCntByPage (PageVO page) {
+    	return sqlSession.selectOne("UserMapper.selectUserCntByPage", page);
     }
 }

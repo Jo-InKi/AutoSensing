@@ -12,7 +12,6 @@
 	<!-- DataTales Example -->
 	<div class="card shadow mb-4">
 		<div class="card-body">
-			${commonAttribute }
 			<div align="right">
 			<form action="/vpn/settings/dest/search.do" name="searchForm" id="destSearchForm">
 			<input type="hidden" name="page" value="1">
@@ -29,7 +28,6 @@
 			<div align="left" class="text-gray-900">총 ${pageMaker.realEnd}페이지 중 ${pageMaker.page.pageNum}</div>
 				<p style="color: red;">${msg.message }</p>
 		<hr />
-			${commonValue }
 			<span style="color:green;">${successMsg}</span>
 					<div class="table-responsive">
 						<table class="table table-bordered" id="dataTable">
@@ -43,6 +41,7 @@
 									<th>주소</th>
 									<th>담당자메일</th>
 									<th>전화번호</th>
+									<th>프로젝트 관리자</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -58,12 +57,13 @@
 										name="rowCheck"></td>
 										<td data-label="번호" class="text-left">${project_index.index + 1}</td>
 										<td nowrap style="overflow:hidden;" data-label="프로젝트명">
-											<a href="/project/edit?projectid=${project.projectid}&page=${pageMaker.page.pageNum}&amount=${pageMaker.page.amount}">${project.projectname}</a>
+											<a href="/project/edit?projectid=${project.projectid}">${project.projectname}</a>
 										</td>
 										<td nowrap style="overflow:hidden;" data-label="회사">${project.company}</td>
 										<td nowrap style="overflow:hidden;" data-label="주소">${project.address}</td>
 										<td nowrap style="overflow:hidden;" data-label="담당자메일">${project.email}</td>
 										<td nowrap style="overflow:hidden;" data-label="전화번호">${project.phone}</td>
+										<td nowrap style="overflow:hidden;" data-label="전화번호">${project.username}</td>
 									</tr>
 								</c:forEach>
                             </tbody>

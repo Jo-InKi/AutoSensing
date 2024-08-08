@@ -34,6 +34,7 @@ import com.auto.sensing.service.LocationService;
 import com.auto.sensing.service.ProjectService;
 import com.auto.sensing.service.SensorService;
 import com.auto.sensing.vo.LocationVO;
+import com.auto.sensing.vo.PageDTO;
 import com.auto.sensing.vo.PageVO;
 import com.auto.sensing.vo.ProjectVO;
 
@@ -53,16 +54,23 @@ public class SensorController {
 	private SensorService sensorService;
 	
 	@GetMapping("/sensor/sensorlist")
-	public String ViewSensorList (@RequestParam("page") int num, PageVO page, Model model, HttpSession httpSession)	{
+	public String ViewSensorList (@RequestParam("page") int num, @RequestParam("amount") int amount, PageVO page, Model model, HttpSession httpSession)	{
 		UserInfoDTO ui = (UserInfoDTO)httpSession.getAttribute("userinfo");
 		if (ui == null)	{
 			// login전이므로 접근실패 처리해야함
 			return "redirect:/";
 		}
-		List<SensorDTO> sl = sensorService.getSensorList(null);
-		model.addAttribute("username", ui.getUserid());
-		model.addAttribute("grade", ui.getGrade());
+		
+		if (num == 0) {
+			num = 1;
+		}
+
+		page.setPageNum(num);
+		page.setAmount(amount);
+		
+		List<SensorDTO> sl = sensorService.selectSensorListByPage(page);
 		model.addAttribute("sensorList", sl);
+		model.addAttribute("pageMaker", new PageDTO(sensorService.selectSensorCntByPage(page), 5, page));
 
 		return "sensor/sensorlist";
 	}
@@ -113,13 +121,12 @@ public class SensorController {
 	}
 	
 	@GetMapping("/sensor/register")
-	public ModelAndView viewRegisterSensor(HttpSession httpSession, ModelAndView model)	{
+	public String viewRegisterSensor(HttpSession httpSession, Model model)	{
 		UserInfoDTO ui = (UserInfoDTO)httpSession.getAttribute("userinfo");
 		
 		if (ui == null)	{
 			// login전이므로 접근실패 처리해야함
-			model.setViewName("redirect:/");
-			return model;
+			return "redirect:/";
 		}
 
 		List<ProjectVO> projectList = new ArrayList<ProjectVO>();
@@ -134,10 +141,9 @@ public class SensorController {
 
 		List<LocationVO> locationList = locationService.selectLocationList(projectList.get(0).getProjectid());
 		System.out.println("sensorAdd > locationList : " + locationList);
-		model.addObject("locationList", locationList);
-		model.setViewName("sensor/sensorAdd");
+		model.addAttribute("locationList", locationList);
 		
-		return model;
+		return "/sensor/sensorAdd";
 	}
 	@PostMapping("/sensor/register.do")
 	public String RegisterSensor (@ModelAttribute("registersensor") SensorDTO sensorDTO, Model model, HttpSession httpSession, RedirectAttributes re)	{
@@ -174,6 +180,26 @@ public class SensorController {
 		model.addAttribute("sensors", sensorDTO);
 		return "sensor/update";
 	}
+	
+	@GetMapping("/sensor/edit")
+	public String viewEditSensor (@RequestParam("sensorid") String sensorid, @RequestParam("channel") long channel, Model model, HttpSession httpSession)	{
+		UserInfoDTO ui = (UserInfoDTO)httpSession.getAttribute("userinfo");
+		if (ui == null)	{
+			// login전이므로 접근실패 처리해야함
+			return "redirect:/";
+		}
+		SensorDTO sensor = sensorService.selectSensor(ui.getProjectid(), sensorid, channel);
+		model.addAttribute("sensor", sensor);
+		
+		List<LocationVO> locationList = locationService.selectLocationList(sensor.getProjectid());
+		System.out.println("sensorAdd > locationList : " + locationList);
+		
+		model.addAttribute("locationList", locationList);
+		
+		return "/sensor/sensorEdit";
+	}
+	
+	
 	@PostMapping ("/sensor/update.do")
 	public String UpdateSensor (@ModelAttribute("updatesensor") SensorDTO sensorDTO, Model model, HttpSession httpSession)	{
 		UserInfoDTO ui = (UserInfoDTO)httpSession.getAttribute("userinfo");

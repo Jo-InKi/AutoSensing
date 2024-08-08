@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.auto.sensing.dao.LocationDAO;
+import com.auto.sensing.dto.LocationDTO;
 import com.auto.sensing.vo.LocationVO;
+import com.auto.sensing.vo.PageDTO;
+import com.auto.sensing.vo.PageVO;
 
 @Service
 public class LocationService {
@@ -16,6 +19,10 @@ public class LocationService {
 	
     public List<LocationVO> selectLocationList(String projectid) {
     	return locationDAO.selectLocationList(projectid);
+    }
+    
+    public LocationVO selectLocation(int location_sn) {
+    	return locationDAO.selectLocation(location_sn);
     }
 
     public int insertLocation(LocationVO location) {
@@ -28,5 +35,13 @@ public class LocationService {
     
     public int chaeckLocationName(LocationVO location) {
     	return locationDAO.chaeckLocationName(location);
+    }
+    
+    public List<LocationDTO> selectLocationListByPage(PageVO page) {
+    	return locationDAO.selectLocationListByPage(page);
+    }
+
+    public int selectLocationCntByPage(PageVO page) {
+    	return locationDAO.selectLocationCntByPage(page);
     }
 }

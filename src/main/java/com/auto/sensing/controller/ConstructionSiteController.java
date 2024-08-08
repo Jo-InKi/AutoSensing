@@ -37,6 +37,9 @@ public class ConstructionSiteController {
 		
 		UserInfoDTO ui = (UserInfoDTO) session.getAttribute("userinfo");
 		System.out.println("User Info : " + ui);
+		if (ui == null)	{
+			return "redirect:/";
+		} 
 
 		return "construction/site";
 	}

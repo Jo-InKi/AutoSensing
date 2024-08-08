@@ -23,6 +23,7 @@ import com.auto.sensing.service.LocationService;
 import com.auto.sensing.service.ProjectManService;
 import com.auto.sensing.service.ProjectService;
 import com.auto.sensing.vo.LocationVO;
+import com.auto.sensing.vo.PageDTO;
 import com.auto.sensing.vo.PageVO;
 import com.auto.sensing.vo.ProjectVO;
 import com.auto.sensing.vo.SearchVO;
@@ -43,61 +44,34 @@ public class LocationController {
 	LocationService locationService;
 	
 	@GetMapping("/location/list.do")
-	public ModelAndView viewLocationList(@RequestParam("page") int num, PageVO page, HttpSession session, HttpServletRequest request) {
+	public String viewLocationList(@RequestParam("page") int num, @RequestParam("amount") int amount, PageVO page, HttpSession session, HttpServletRequest request, Model model) {
 		
-		ModelAndView mav = new ModelAndView();
 		UserInfoDTO ui = (UserInfoDTO)session.getAttribute("userinfo");
 
-		if(num == 0) {
+		if(ui== null) {
+			return "redirect:/";
+		}
+		
+		if (num == 0) {
 			num = 1;
 		}
-		
+
 		page.setPageNum(num);
-		page.setSearch(new SearchVO());
+		page.setAmount(amount);
 		
-		if (ui == null)	{
-			// login전이므로 접근실패 처리해야함
-			mav.setViewName("/login");
-			return mav;
+		
+		if(ui.getGrade().equals("0002")) {
+			SearchVO search = new SearchVO();
+			search.setKeywordType("userid");
+			search.setKeyword(ui.getUserid());
+			page.setSearch(search);
 		}
 		
-		
-		System.out.println(">>> ui : " + ui);
-		List<ProjectVO> projectList = new ArrayList<ProjectVO>();
-		if(ui.getGrade().equals("0001")) {
-			//최고 관리자
-			projectList.addAll(projectService.getProjectList(null));
-		} else {
-			// 프로젝트 관리자
-			projectList.addAll(projectManService.selectProjectListAssign(ui.getUserid()));
-		}
-		
-		List<LocationDTO> locationList = new ArrayList<LocationDTO>();
-		
-		System.out.println(projectList);
-		
-		for(ProjectVO project : projectList) {
-			List<LocationVO> locations = locationService.selectLocationList(project.getProjectid());
-			System.out.println("locations : " + project.getProjectid() +" : " + locations);
-			if(locations == null)	continue;
-			for(LocationVO location : locations) {
-				LocationDTO tmp = new LocationDTO();
-				tmp.setLocation_sn(location.getLocation_sn());
-				tmp.setLocation_nm(location.getLocation_nm());
-				tmp.setProjectid(project.getProjectid());
-				tmp.setProjectname(project.getProjectname());
-				locationList.add(tmp);
-			}
-		}
-		
-		System.out.println(locationList);
-		// 우측 sidebar는 무조건 들어가므로 여기를 통과
-		mav.addObject("username", ui.getUserid());
-		mav.addObject("grade", ui.getGrade());
-//		List<LocationVO> locationList = locationService.selectLocationList(ui.getProjectid());
-		mav.addObject("locationList", locationList);
-		mav.setViewName("location/locationlist");
-		return mav;
+		List<LocationDTO> locationList = locationService.selectLocationListByPage(page);
+		model.addAttribute("locationList", locationList);
+		model.addAttribute("pageMaker", new PageDTO(locationService.selectLocationCntByPage(page), 5, page));
+
+		return "/location/locationlist";
 	}
 	
 	@PostMapping("/location/list")
@@ -116,12 +90,40 @@ public class LocationController {
 			// login전이므로 접근실패 처리해야함
 			return "redirect:/";
 		}
-		model.addAttribute("username", ui.getUserid());
-		model.addAttribute("grade", ui.getGrade());
-		List<ProjectVO> projectList = projectService.getProjectList(null);
-		System.out.println("projectList : " + projectList);
+		List<ProjectVO> projectList = new ArrayList<ProjectVO>();
+
+		if(ui.getGrade().equals("0001")) {
+			projectList.addAll(projectService.getProjectList(null));
+		} else if(ui.getGrade().equals("0002")) {
+			projectList.addAll(projectService.getProjectList(ui.getUserid()));
+		}
 		model.addAttribute("projectlist", projectList);
-		return "location/locationAdd";
+		return "location/locationEdit";
+	}
+	
+	@GetMapping("/location/edit")
+	public String viewEditLocation(@RequestParam("location_sn") Integer location_sn, HttpSession httpSession, Model model)	{
+		UserInfoDTO ui = (UserInfoDTO)httpSession.getAttribute("userinfo");
+		
+		if (ui == null)	{
+			// login전이므로 접근실패 처리해야함
+			return "redirect:/";
+		}
+		
+		List<ProjectVO> projectList = new ArrayList<ProjectVO>();
+
+		if(ui.getGrade().equals("0001")) {
+			projectList.addAll(projectService.getProjectList(null));
+		} else if(ui.getGrade().equals("0002")) {
+			projectList.addAll(projectService.getProjectList(ui.getUserid()));
+		}
+		
+		System.out.println("projectList >>>>>>>>" + projectList);
+		
+		LocationVO location = locationService.selectLocation(location_sn);
+		model.addAttribute("projectList", projectList);
+		model.addAttribute("location", location);
+		return "location/locationEdit";
 	}
 	
 	@PostMapping("/location/register.do")

@@ -3,12 +3,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
 	<!-- Page Heading -->
-	<h1 class="h3 mb-2 text-gray-800" style="font-family:'IBM Plex Sans KR';">츠로젝트 관리 > 프로젝트 조회 > <span style="color:#0d6efd;">프로젝트 추가</span></h1>
+	<h1 class="h3 mb-2 text-gray-800" style="font-family:'IBM Plex Sans KR';">프로젝트 관리 > 프로젝트 조회 > <span style="color:#0d6efd;">프로젝트 추가</span></h1>
 	<hr>
 	<!-- DataTales Example -->
 	<div class="card shadow mb-4">
@@ -28,7 +29,7 @@
 						<th class="tg-0lax">프로젝트 아이디&emsp; <a style="color:darkgrey;" data-bs-toggle="tooltip" data-bs-title="한글, 영문 및 숫자 3자~128자, 특수문자(-,_)만 허용, 중복 불가"><i class="fa-solid fa-circle-info"></i></a></th>
 							<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
-							<input type="text" id="projectid" name="projectid" size="12" maxlength="12" value="${project.projectid }" class="form-control" oninput="resetprojectIdDuplicateChk" placeholder="프로젝트 아이디 입력" disabled>
+							<input type="text" id="projectid" name="projectid" size="12" maxlength="12" value="${editProject.projectid }" class="form-control" oninput="resetprojectIdDuplicateChk" placeholder="프로젝트 아이디 입력" disabled>
 							<button class="btn btn-outline-info" type="button" id="projectidDuplicate_check" onClick="projectIdDuplicationCheck();" disabled>중복 확인</button>
 							<div id="projectidValidationFeedback" class="invalid-feedback"></div></div>
 							<span style="color:red;">${valid_projectid}</span>
@@ -38,7 +39,7 @@
 						<th class="tg-0lax">프로젝트 명칭(Kr)&emsp; <a style="color:darkgrey;" data-bs-toggle="tooltip" data-bs-title="한글, 영문 및 숫자 3자~128자, 특수문자(-,_)만 허용, 중복 불가"><i class="fa-solid fa-circle-info"></i></a></th>
 							<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
-							<input type="text" id="projectname" name="projectname" size="128" maxlength="128" value="${project.projectname }" class="form-control" oninput="resetprojectnameDuplicateChk" placeholder="프로젝트 한글명 입력" disabled>
+							<input type="text" id="projectname" name="projectname" size="128" maxlength="128" value="${editProject.projectname }" class="form-control" oninput="resetprojectnameDuplicateChk" placeholder="프로젝트 한글명 입력" disabled>
 							<button class="btn btn-outline-info" type="button" id="projectnameDuplicate_check" onClick="projectnameDuplicationCheck();" disabled>중복 확인</button>
 							<div id="projectnameValidationFeedback" class="invalid-feedback"></div></div>
 							<span style="color:red;">${valid_projectname}</span>
@@ -48,7 +49,7 @@
 						<th class="tg-0lax">프로젝트 명칭(En)&emsp; <a style="color:darkgrey;" data-bs-toggle="tooltip" data-bs-title="한글, 영문 및 숫자 3자~128자, 특수문자(-,_)만 허용, 중복 불가"><i class="fa-solid fa-circle-info"></i></a></th>
 							<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
-							<input type="text" id="emname" name="emname" size="128" maxlength="128" value="${project.emname }" class="form-control" oninput="resetemnameDuplicateChk" placeholder="프로젝트 한글명 입력" disabled>
+							<input type="text" id="emname" name="emname" size="128" maxlength="128" value="${editProject.emname }" class="form-control" oninput="resetemnameDuplicateChk" placeholder="프로젝트 한글명 입력" disabled>
 							<button class="btn btn-outline-info" type="button" id="emnameDuplicate_check" onClick="emnameDuplicationCheck();" disabled>중복 확인</button>
 							<div id="emnameValidationFeedback" class="invalid-feedback"></div></div>
 							<span style="color:red;">${valid_emname}</span>
@@ -58,7 +59,7 @@
 						<th class="tg-0lax">회사명</th>
 							<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
-								<input type="text" id="company" name="company" size="80" maxlength="80" value="${project.company }" class="form-control" placeholder="회사명 입력" disabled>
+								<input type="text" id="company" name="company" size="80" maxlength="80" value="${editProject.company }" class="form-control" placeholder="회사명 입력" disabled>
 							</div>
 						</td>
 					</tr>
@@ -66,7 +67,7 @@
 						<th class="tg-0lax">E-mail</th>
 							<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
-								<input type="email" id="email" name="email" size="80" maxlength="80" value="${project.email }" class="form-control" placeholder="이메일 입력" disabled>
+								<input type="email" id="email" name="email" size="80" maxlength="80" value="${editProject.email }" class="form-control" placeholder="이메일 입력" disabled>
 							</div>
 						</td>
 					</tr>
@@ -74,7 +75,7 @@
 						<th class="tg-0lax">연락처</th>
 							<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
-								<input type="text" id="phone" name="phone" size="80" maxlength="80" value="${project.phone }" class="form-control" oninput="autoHyphen2(this)" placeholder="연락처 입력" disabled>
+								<input type="text" id="phone" name="phone" size="80" maxlength="80" value="${editProject.phone }" class="form-control" oninput="autoHyphen2(this)" placeholder="연락처 입력" disabled>
 							</div>
 						</td>
 					</tr>
@@ -95,6 +96,17 @@
 						<th class="tg-0lax">현장 이미지</th>
 							<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
+								<c:choose>
+								    <c:when test="${empty currProject.mappath}">
+								        <img alt="Not MapFile" src="/img/no-image-icon.png" height="50px">
+								    </c:when>
+								    <c:otherwise>
+										<c:set var="images" value="${fn:split(editProject.mappath,',')}" />
+										<c:forEach var="image" items="${images}" varStatus="varStatus">
+											<img id="i1" width="200" height="120" src='/map/${editProject.projectid }/${image}' onError="this.style.visibility='hidden'" style="cursor:hand" onclick="pop(this)">&emsp;
+									    </c:forEach> 
+								    </c:otherwise>
+								</c:choose>
 								<input type="file" accept=".jpg, .jpeg, .png" id="siteImages" name="siteImages" multiple class="form-control" disabled >
 							</div>
 						</td>

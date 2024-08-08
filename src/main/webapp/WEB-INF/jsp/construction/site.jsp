@@ -13,7 +13,6 @@
 		<div class="fc_888">
 			<div class="fc_888 divide" id="isRenewal"></div>
 		</div>
-		${commonAttribute }
 		<div class="siteImage">
 
 			<c:choose>

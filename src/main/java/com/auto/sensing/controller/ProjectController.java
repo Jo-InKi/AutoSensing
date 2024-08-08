@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.auto.sensing.dto.MessageDTO;
+import com.auto.sensing.dto.ProjectDTO;
 import com.auto.sensing.dto.SensorDTO;
 import com.auto.sensing.dto.UserInfoDTO;
 import com.auto.sensing.service.LocationService;
@@ -67,12 +68,6 @@ public class ProjectController {
 	@Value("${autosensing.project.uploadpath}")
 	private String uploadpath;
 	
-	@ModelAttribute
-	public void addAttributes(ModelAndView modelAndView) {
-        modelAndView.addObject("commonValue", "This is a common value");
-    }
-
-
 	@GetMapping("project/register")
 	public String ViewRegisterPage(Model model, HttpSession session) {
 		UserInfoDTO ui = (UserInfoDTO) session.getAttribute("userinfo");
@@ -119,34 +114,34 @@ public class ProjectController {
 	}
 
 	@GetMapping("project/change")
-	public ModelAndView ProjectChange(@RequestParam("projectid") String projectid, HttpServletRequest request, ModelAndView model, HttpSession session) {
+	public String ProjectChange(@RequestParam("projectid") String projectid, HttpServletRequest request, Model model, HttpSession session) {
 		
-//		model.setView(new RedirectView("redirect:/construction/site",true));
-		System.out.println("projectid >>>>>>>>>> " + projectid);
-		HttpSession currSession = request.getSession();
-		UserInfoDTO ui = (UserInfoDTO) currSession.getAttribute("userinfo");
-		System.out.println("userinfo(HttpSession) " + session.getAttribute("userinfo"));
-		System.out.println("userinfo(HttpServletRequest) " + ui);
+		
+		UserInfoDTO ui = (UserInfoDTO) session.getAttribute("userinfo");
 		ui.setProjectid(projectid);
 		session.setAttribute("userinfo", ui);
 		
-		ProjectVO currentProject = projectService.selectProject(projectid, null, null);
-		
-		/*
-		 * model.addObject("currProject", currentProject);
-		 * System.out.println(currentProject); model.addObject("currProjectid",
-		 * projectid);
-		 */
-		
-		model.setViewName("/construction/site");
-
-		return model;
+		if (ui == null)	{
+			return "redirect:/";
+		} else {
+			ProjectVO currentProject = projectService.selectProject(projectid, null, null);
+			
+			model.addAttribute("currProject", currentProject);
+			System.out.println(currentProject);
+			model.addAttribute("currProjectid", projectid);
+			return "redirect:/construction/site";
+		}
 	}
 
 	@GetMapping("/project/list")
-	public ModelAndView viewProjectList(@RequestParam("page") int num, @RequestParam("amount") int amount, PageVO page, HttpSession session, HttpServletRequest request, ModelAndView model) {
+	public String viewProjectList(@RequestParam("page") int num, @RequestParam("amount") int amount, PageVO page, HttpSession session, HttpServletRequest request, Model model) {
 
 		UserInfoDTO ui = (UserInfoDTO) session.getAttribute("userinfo");
+		
+		if(ui== null) {
+			return "redirect:/";
+		}
+		
 		if (num == 0) {
 			num = 1;
 		}
@@ -154,7 +149,6 @@ public class ProjectController {
 		page.setPageNum(num);
 		page.setAmount(amount);
 
-		List<ProjectVO> projectList = new ArrayList<ProjectVO>();
 		if (ui.getGrade().equals("0002")){
 			// 프로젝트 관리자
 			SearchVO search = new SearchVO();
@@ -163,78 +157,27 @@ public class ProjectController {
 			page.setSearch(search);
 		}
 
-		projectList.addAll(projectService.selectProjectListByPage(page));
-		model.addObject("projectlist", projectList);
-
-		List<LocationVO> locationList = locationService.selectLocationList(ui.getProjectid());
-		System.out.println(locationList);
-		model.addObject("locationList", locationList);
-
-		Map<Integer, List<SensorDTO>> sensorList = new HashMap<Integer, List<SensorDTO>>();
-		for (LocationVO location : locationList) {
-			List<SensorDTO> sensors = sensorService.getSensorList(location.getLocation_sn());
-			sensorList.put(location.getLocation_sn(), sensors);
-		}
-
-		// 우측 sidebar는 무조건 들어가므로 여기를 통과
-		model.addObject("sensorList", sensorList);
-		model.addObject("username", ui.getUserid());
-		model.addObject("grade", ui.getGrade());
-		model.addObject("pageMaker", new PageDTO(projectService.selectProjectCntByPage(page), 5, page));
-		model.setViewName("project/projectlist");
-		return model;
+		List<ProjectDTO> projectList = projectService.selectProjectListByPage(page);
+		model.addAttribute("projectlist", projectList);
+		model.addAttribute("pageMaker", new PageDTO(projectService.selectProjectCntByPage(page), 5, page));
+		return "project/projectlist";
 	}
 	
 	@GetMapping("/project/edit")
-	public ModelAndView viewProjectEdit(@RequestParam("page") int num, @RequestParam("amount") int amount, PageVO page, HttpSession session, HttpServletRequest request, @RequestParam("projectid") String projectid) {
+	public String viewProjectEdit(@RequestParam("projectid") String projectid, HttpSession session, HttpServletRequest request, Model model) {
 
-		
-		
-		ModelAndView mav = new ModelAndView();
 		UserInfoDTO ui = (UserInfoDTO) session.getAttribute("userinfo");
-		if (ui == null) {
-			// login전이므로 접근실패 처리해야함
-			mav.setViewName("/");
-			return mav;
+		if(ui== null) {
+			return "redirect:/";
 		}
-
-		List<ProjectVO> projectList = new ArrayList<ProjectVO>();
-		if (ui.getGrade().equals("0002")){
-			// 프로젝트 관리자
-			SearchVO search = new SearchVO();
-			search.setKeywordType("userid");
-			search.setKeyword(ui.getUserid());
-			page.setSearch(search);
-		}
-
-		projectList.addAll(projectService.selectProjectListByPage(page));
-
-		ui.setProjectid(projectList.get(0).getProjectid());
-		session.setAttribute("userinfo", ui);
-		mav.addObject("projectlist", projectList);
-
-		List<LocationVO> locationList = locationService.selectLocationList(ui.getProjectid());
-		System.out.println(locationList);
-		mav.addObject("locationList", locationList);
-
-		Map<Integer, List<SensorDTO>> sensorList = new HashMap<Integer, List<SensorDTO>>();
-		for (LocationVO location : locationList) {
-			List<SensorDTO> sensors = sensorService.getSensorList(location.getLocation_sn());
-			sensorList.put(location.getLocation_sn(), sensors);
-		}
-
+		
+		ProjectVO project =  projectService.selectProject(projectid, null, null);
 		List<UserVO> managerList = userService.selectUserListByGrade("0002");
 
-		mav.addObject("managerList", managerList);
+		model.addAttribute("editProject", project);
+		model.addAttribute("managerList", managerList);
 		
-		ProjectVO project = projectService.selectProject(projectid, null, null);
-		// 우측 sidebar는 무조건 들어가므로 여기를 통과
-		mav.addObject("sensorList", sensorList);
-		mav.addObject("username", ui.getUserid());
-		mav.addObject("grade", ui.getGrade());
-		mav.addObject("project", project);
-		mav.setViewName("project/projectEdit");
-		return mav;
+		return "/project/projectEdit";
 	}
 
 	// 아이디 중복 검사

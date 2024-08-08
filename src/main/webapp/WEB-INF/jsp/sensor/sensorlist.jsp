@@ -59,7 +59,7 @@
 										name="rowCheck"></td>
 										<td data-label="번호" class="text-left">${sensor_index.index + 1}</td>
 										<td nowrap style="overflow:hidden;" data-label="센서ID">
-											<a href="/project/edit?projectid=${project.projectid}&page=${pageMaker.page.pageNum}&amount=${pageMaker.page.amount}">${sensor.sensorid}</a>
+											<a href="/sensor/edit?sensorid=${sensor.sensorid}&channel=${sensor.channel}">${sensor.sensorid}</a>
 										</td>
 										<td nowrap style="overflow:hidden;" data-label="Channel">${sensor.channel}</td>
 										<td nowrap style="overflow:hidden;" data-label="위치">${sensor.sensorname}</td>

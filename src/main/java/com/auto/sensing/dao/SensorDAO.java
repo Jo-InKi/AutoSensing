@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.auto.sensing.dto.SensorCompanyDTO;
 import com.auto.sensing.dto.SensorDTO;
 import com.auto.sensing.dto.SensorReportDTO;
+import com.auto.sensing.vo.PageVO;
 
 @Repository("SensorDAO")
 public class SensorDAO {
@@ -22,6 +23,14 @@ public class SensorDAO {
 	
 	public List <SensorDTO> selectSensorList(String projectid)	{
 		return sqlSession.selectList("SensorMapper.selectSensorListByProjectID", projectid);
+	}
+	
+	public List <SensorDTO> selectSensorListByPage(PageVO page)	{
+		return sqlSession.selectList("SensorMapper.selectSensorListByPage", page);
+	}
+	
+	public int selectSensorCntByPage(PageVO page)	{
+		return sqlSession.selectOne("SensorMapper.selectSensorCntByPage", page);
 	}
 	
 	public List <SensorDTO> selectSensorList(int location_sn)	{

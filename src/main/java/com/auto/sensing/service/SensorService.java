@@ -11,6 +11,7 @@ import com.auto.sensing.dao.SensorDAO;
 import com.auto.sensing.dto.SensorCompanyDTO;
 import com.auto.sensing.dto.SensorDTO;
 import com.auto.sensing.dto.SensorReportDTO;
+import com.auto.sensing.vo.PageVO;
 
 @Service
 public class SensorService {
@@ -20,6 +21,14 @@ public class SensorService {
 
 	public List <SensorDTO> getSensorList(String projectid)	{
 		return sensorDAO.selectSensorList(projectid);
+	}
+	
+	public List <SensorDTO> selectSensorListByPage(PageVO page)	{
+		return sensorDAO.selectSensorListByPage(page);
+	}
+	
+	public int selectSensorCntByPage(PageVO page)	{
+		return sensorDAO.selectSensorCntByPage(page);
 	}
 	
 	public List <SensorDTO> getSensorList(int location_sn)	{

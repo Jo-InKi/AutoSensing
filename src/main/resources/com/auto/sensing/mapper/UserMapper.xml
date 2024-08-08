@@ -26,6 +26,40 @@
 			</if>
 		</where>
 	</select>
+	
+	<select id="selectUserListByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="com.auto.sensing.vo.UserVO">
+		SELECT 
+			  *
+		FROM user_tb
+		<trim prefix="where" prefixOverrides="AND">
+			<if test="search.keyword != null and search.keyword !=''">
+				<if test="search.keywordType == 'userid'">
+					userid LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+				<if test="search.keywordType == 'projectid'">
+					username LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+			</if>
+		</trim>
+		ORDER BY userid ASC
+		LIMIT ${amount} OFFSET ${(pageNum-1)*amount};
+	</select>
+
+	<select id="selectUserCntByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="Integer">
+		SELECT 
+			  COUNT(*)
+		FROM user_tb
+		<trim prefix="where" prefixOverrides="AND">
+			<if test="search.keyword != null and search.keyword !=''">
+				<if test="search.keywordType == 'userid'">
+					userid LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+				<if test="search.keywordType == 'projectid'">
+					username LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+			</if>
+		</trim>
+	</select>
 
 
 </mapper>

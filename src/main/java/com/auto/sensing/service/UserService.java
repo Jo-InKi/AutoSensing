@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.auto.sensing.dao.UserDAO;
 import com.auto.sensing.dto.UserLoginDTO;
+import com.auto.sensing.vo.PageVO;
 import com.auto.sensing.vo.UserVO;
 
 @Service
@@ -25,5 +26,13 @@ public class UserService {
     
     public List<UserVO> selectUserListByGrade (String grade) {
     	return userDAO.selectUserListByGrade(grade);
+    }
+    
+    public List<UserVO> selectUserListByPage (PageVO page) {
+    	return userDAO.selectUserListByPage(page);
+    }
+    
+    public int selectUserCntByPage (PageVO page) {
+    	return userDAO.selectUserCntByPage(page);
     }
 }

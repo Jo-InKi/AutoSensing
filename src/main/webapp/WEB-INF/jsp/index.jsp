@@ -12,7 +12,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>NORMA Q Care</title>
+<title>Auto Sensing</title>
 
 <!-- Custom fonts for this template-->
 <link href="/assets/vendor/fontawesome-free/css/all.min.css"
@@ -48,7 +48,6 @@
 									</div>
 									<hr />
 									<br />
-									${commonAttribute }
 									<form action="/login" method="POST">
 
 										<c:if test="${LoginFailMessage ne null}">

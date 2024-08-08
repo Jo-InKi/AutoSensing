@@ -37,7 +37,6 @@ public class GlobalControllerAdvice {
 	
     @ModelAttribute
     public void addAttributes(Model model, HttpSession session) {
-        model.addAttribute("commonAttribute", "This is a common attribute");
         UserInfoDTO userinfo = (UserInfoDTO) session.getAttribute("userinfo");
         System.out.println("GlobalControllerAdvice Userinfo : " + userinfo);
         
