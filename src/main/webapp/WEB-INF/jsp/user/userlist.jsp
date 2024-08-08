@@ -22,7 +22,7 @@
   				<button class="btn btn-primary" type="button" onclick="handleSubmit();"><i class="fas fa-search fa-sm"></i></button>
 			</div>
 			</form>
-				<a href="/sensor/register"><button type="button"
+				<a href="/user/register"><button type="button"
 						class="btn btn-primary">사용자 추가</button></a> <button
 						type="button" class="btn btn-secondary" onClick="deleteDest();">사용자 삭제</button>
 			</div>
@@ -64,7 +64,7 @@
 										        ${user.userid}
 										    </c:when>
 										    <c:otherwise>
-												<a href="/project/edit?projectid=${user.userid}&page=${pageMaker.page.pageNum}&amount=${pageMaker.page.amount}">${user.userid}</a>
+												<a href="/user/edit?userid=${user.userid}">${user.userid}</a>
 										    </c:otherwise>
 										</c:choose>
 										</td>

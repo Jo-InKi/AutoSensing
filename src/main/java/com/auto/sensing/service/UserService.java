@@ -20,6 +20,10 @@ public class UserService {
     	return userDAO.checkPassword(user);
     }
     
+    public UserVO selectUSerByUserID (String userid) {
+    	return userDAO.selectUSerByUserID(userid);
+    }
+    
     public List<UserVO> selectAllUsers () {
     	return userDAO.selectAllUsers();
     }

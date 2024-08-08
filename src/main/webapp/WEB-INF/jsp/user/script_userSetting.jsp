@@ -100,7 +100,7 @@
 		});
 </script>
 <script type="text/javascript">
-const textBox = document.getElementById("USER_ID");
+const textBox = document.getElementById("userid");
 if(textBox){
 	textBox.onpaste = (e) => { //붙여 넣기 막기
 	  e.preventDefault();
@@ -157,13 +157,13 @@ function resetIdDuplicateChk(){
 
 //아이디 중복확인
 function userIdDuplicationCheck(){
-	var userId = document.querySelector('#USER_ID').value;
-	var prv_userId = '${user.USER_ID}';
+	var userId = document.querySelector('#userid').value;
+	var prv_userId = '${user.userid}';
 	
-	if(!document.querySelector('#USER_ID').value || userId == '' || userId == null){
+	if(!document.querySelector('#userid').value || userId == '' || userId == null){
 		alert("아이디를 입력하세요!");
-		document.querySelector('#USER_ID').focus();
-		document.querySelector('#USER_ID').className = 'table_input is-invalid';
+		document.querySelector('#userid').focus();
+		document.querySelector('#userid').className = 'table_input is-invalid';
 		document.querySelector('#IDduplicate_check').disabled = true;
 	}
 	
@@ -203,12 +203,12 @@ function userIdDuplicationCheck(){
 }
 //이메일 중복 확인
 function emailDuplicationCheck(){
-var email = document.querySelector('#EMAIL').value;
-var prv_email = '${user.EMAIL}';
+var email = document.querySelector('#email').value;
+var prv_email = '${user.email}';
 	
-	if(!document.querySelector('#EMAIL').value || email == '' || email == null){
+	if(!document.querySelector('#email').value || email == '' || email == null){
 		alert("이메일을 입력하세요!");
-		document.querySelector('#EMAIL').focus();
+		document.querySelector('#email').focus();
 		document.querySelector('#emailDuplicate_check').disabled = true;
 	}
 	
@@ -220,11 +220,11 @@ var prv_email = '${user.EMAIL}';
 			"prv_email" : prv_email
 		},
 		success : function(data) {
-		if(document.querySelector('#EMAIL').value){
+		if(document.querySelector('#email').value){
 			if (data == 1) { // 1이면 중복
 				emailDupChk = false;
 				changeBtn();
-				document.querySelector('#EMAIL').className = 'table_input is-invalid';
+				document.querySelector('#email').className = 'table_input is-invalid';
 				document.querySelector('#emailValidationFeedback').innerHTML = '중복된 이메일 주소 입니다.';
 				document.querySelector('#emailValidationFeedback').style.display = 'block';
 				document.querySelector('#EMAIL').focus();
@@ -248,9 +248,9 @@ var prv_email = '${user.EMAIL}';
 
 
 		//아이디 확인
-		if(document.querySelector('#USER_ID')) document.querySelector('#USER_ID').addEventListener('keyup',function(el) {
+		if(document.querySelector('#userid')) document.querySelector('#userid').addEventListener('keyup',function(el) {
 			var idCheck = RegExp(idCheckString);
-			let id = document.querySelector('#USER_ID').value;
+			let id = document.querySelector('#userid').value;
 			
 			document.querySelector('#IDduplicate_check').disabled = false;
 			if(!idCheck.test(id)){
@@ -274,18 +274,18 @@ var prv_email = '${user.EMAIL}';
 		});
 		
 		//이름 확인
-		if(document.querySelector('#USER_NM')) document.querySelector('#USER_NM').addEventListener('keyup',function(el) {
+		if(document.querySelector('#username')) document.querySelector('#username').addEventListener('keyup',function(el) {
 			var nameCheck = RegExp(/^[A-Za-z가-힣_\-0-9]{2,32}$/);
-			let name = document.querySelector('#USER_NM').value;
+			let name = document.querySelector('#username').value;
 			
 			if(!nameCheck.test(name)){
 				nmCheck = false;
-				document.querySelector('#USER_NM').className = 'table_input is-invalid';
+				document.querySelector('#username').className = 'table_input is-invalid';
 				document.querySelector('#usernameValidationFeedback').innerHTML = '이름 형식을 확인하세요.';
 				// 				document.querySelector('#usernameValidationFeedback').style.display = 'block';
 			}else{
 				nmCheck = true;
-				document.querySelector('#USER_NM').className = 'table_input is-valid';
+				document.querySelector('#username').className = 'table_input is-valid';
 				document.querySelector('#usernameValidationFeedback').innerHTML = '';
 				document.querySelector('#userNMSecondValiation').style.display = 'none';
 // 				document.querySelector('#usernameValidationFeedback').style.display = 'none';
@@ -295,100 +295,41 @@ var prv_email = '${user.EMAIL}';
 		
 		
 		//이메일 확인
-		if(document.querySelector('#EMAIL')) document.querySelector('#EMAIL').addEventListener('keyup',function(el) {
+		if(document.querySelector('#email')) document.querySelector('#email').addEventListener('keyup',function(el) {
 			var emailCheck = RegExp(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i);
 			var email = document.querySelector('#EMAIL').value;
 			if(!emailCheck.test(email)){
-				document.querySelector('#EMAIL').className = 'table_input is-invalid';
+				document.querySelector('#email').className = 'table_input is-invalid';
 				document.querySelector('#emailValidationFeedback').innerHTML = '이메일 형식을 확인하세요.';
 				document.querySelector('#emailValidationFeedback').style.display = 'block';
 				document.querySelector('#emailDuplicate_check').disabled = true;
 				emailCheck = false;
 			}else if(emailDupChk == false){
-				document.querySelector('#EMAIL').className = 'table_input is-invalid';
+				document.querySelector('#email').className = 'table_input is-invalid';
 				document.querySelector('#emailValidationFeedback').innerHTML = '이메일 중복 검사가 필요합니다.';
 				document.querySelector('#emailValidationFeedback').style.display = 'block';
 				document.querySelector('#emailDuplicate_check').disabled = false;
 				emailCheck = false;
 			}else{
 				document.querySelector('#emailValidationFeedback').style.display = 'none';
-				document.querySelector('#EMAIL').className = 'table_input is-valid';
+				document.querySelector('#email').className = 'table_input is-valid';
 				emailCheck = true;
 			}
 			changeBtn();
 		});
 		
 		//휴대폰 전화번호 확인
-		if(document.querySelector('#CP')) document.querySelector('#CP').addEventListener('keyup',function(el) {
-			var number = document.querySelector('#CP').value;
+		if(document.querySelector('#phone')) document.querySelector('#phone').addEventListener('keyup',function(el) {
+			var number = document.querySelector('#phone').value;
 			if(!isTelFormat(number) && !isHpFormat(number)){
-				document.querySelector('#CP').className = 'table_input is-invalid';
+				document.querySelector('#phone').className = 'table_input is-invalid';
 				document.querySelector('#cellPhoneValidationFeedback').innerHTML = '휴대전화번호 형식을 확인하세요.';
 				document.querySelector('#cellPhoneValidationFeedback').style.display = 'block';
 				cpCheck = false;
 			}else{
 				document.querySelector('#cellPhoneValidationFeedback').style.display = 'none';
-				document.querySelector('#CP').className = 'table_input is-valid';
+				document.querySelector('#phone').className = 'table_input is-valid';
 				cpCheck = true;
-			}
-			changeBtn();
-		});
-		
-		//접속 IP1
-		if(document.querySelector('#ip_1')) document.querySelector('#ip_1').addEventListener('keyup',function(el) {
-			let ip = document.querySelector('#ip_1').value;
-
-			if(Number(ip) >= 255){
-				document.querySelector('#ipValidationFeedback').innerHTML = 'IP 주소 범위 형식을 확인하세요.';
-				document.querySelector('#ipValidationFeedback').style.display = 'block';
-				ipCheck = false;
-			}else{
-				document.querySelector('#ipValidationFeedback').style.display = 'none';
-				ipCheck = true;
-			}
-			
-		});
-		
-		//접속 IP2
-		if(document.querySelector('#ip_2')) document.querySelector('#ip_2').addEventListener('keyup',function(el) {
-			let ip = document.querySelector('#ip_2').value;
-
-			if(Number(ip) >= 255){
-				document.querySelector('#ipValidationFeedback').innerHTML = 'IP 주소 범위 형식을 확인하세요.';
-				document.querySelector('#ipValidationFeedback').style.display = 'block';
-				ipCheck = false;
-			}else{
-				document.querySelector('#ipValidationFeedback').style.display = 'none';
-				ipCheck = true;
-			}
-			changeBtn();
-		});
-		
-		//접속 IP3
-		if(document.querySelector('#ip_3')) document.querySelector('#ip_3').addEventListener('keyup',function(el) {
-			let ip = document.querySelector('#ip_3').value;
-
-			if(Number(ip) >= 255){
-				document.querySelector('#ipValidationFeedback').innerHTML = 'IP 주소 범위 및 형식을 확인하세요.';
-				document.querySelector('#ipValidationFeedback').style.display = 'block';
-				ipCheck = false;
-			}else{
-				document.querySelector('#ipValidationFeedback').style.display = 'none';
-				ipCheck = true;
-			}
-			
-		});
-		//접속 IP4
-		if(document.querySelector('#ip_4')) document.querySelector('#ip_4').addEventListener('keyup',function(el) {
-			let ip = document.querySelector('#ip_4').value;
-
-			if(Number(ip) >= 255){
-				document.querySelector('#ipValidationFeedback').innerHTML = 'IP 주소 범위 및 형식을 확인하세요.';
-				document.querySelector('#ipValidationFeedback').style.display = 'block';
-				ipCheck = false;
-			}else{
-				document.querySelector('#ipValidationFeedback').style.display = 'none';
-				ipCheck = true;
 			}
 			changeBtn();
 		});

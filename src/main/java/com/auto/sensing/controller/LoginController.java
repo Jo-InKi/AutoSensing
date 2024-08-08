@@ -31,6 +31,7 @@ public class LoginController {
 		if (user != null) {
 			return "redirect:/construction/site"; //최고 관리자 & 일반 관리자 페이지 이동
 		}
+		System.out.println(model.getAttribute("LoginFailMessage"));
 		return "index";
 	}
 	
@@ -52,7 +53,8 @@ public class LoginController {
 			return "redirect:/construction/site";
 		} else {
 			System.out.println("Login Failed");
-			return "redirect:/";
+			model.addAttribute("LoginFailMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			return "index";
 		}
 	}
 	

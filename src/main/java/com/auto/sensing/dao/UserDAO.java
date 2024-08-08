@@ -21,6 +21,10 @@ public class UserDAO {
     	return sqlSession.selectOne("UserMapper.checkPassword", user);
     }
     
+    public UserVO selectUSerByUserID (String userid) {
+    	return sqlSession.selectOne("UserMapper.selectUSerByUserID", userid);
+    }
+    
     public List<UserVO> selectAllUsers () {
     	return sqlSession.selectList("UserMapper.selectAllUsers");
     }

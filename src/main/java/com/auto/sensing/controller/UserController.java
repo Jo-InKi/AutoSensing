@@ -76,4 +76,33 @@ public class UserController {
 
 		return "/user/userlist";
 	}
+	
+	@GetMapping("/user/register")
+	public String UserAddView(Model model, HttpSession session) {
+		
+		UserInfoDTO ui = (UserInfoDTO)session.getAttribute("userinfo");
+
+		if(ui== null) {
+			return "redirect:/";
+		}
+
+		return "/user/userAdd";
+	}
+	
+	@GetMapping("/user/edit")
+	public String UserEditView(@RequestParam("userid") String userid,Model model, HttpSession session) {
+		
+		UserInfoDTO ui = (UserInfoDTO)session.getAttribute("userinfo");
+
+		if(ui== null) {
+			return "redirect:/";
+		}
+		
+		UserVO userinfo = userService.selectUSerByUserID(userid);
+		
+		model.addAttribute("user", userinfo);
+
+		return "/user/userEdit";
+	}
+
 }

@@ -27,6 +27,16 @@
 		</where>
 	</select>
 	
+	<select id="selectUSerByUserID" parameterType="String" resultType="com.auto.sensing.vo.UserVO">
+		SELECT
+			*
+		FROM user_tb
+		<where>
+			<if test="userid != null and userid != ''">
+				AND userid = #{userid}
+			</if>
+		</where>
+	</select>
 	<select id="selectUserListByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="com.auto.sensing.vo.UserVO">
 		SELECT 
 			  *
