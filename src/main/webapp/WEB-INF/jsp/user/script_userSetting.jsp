@@ -227,7 +227,7 @@ var prv_email = '${user.email}';
 				document.querySelector('#email').className = 'table_input is-invalid';
 				document.querySelector('#emailValidationFeedback').innerHTML = '중복된 이메일 주소 입니다.';
 				document.querySelector('#emailValidationFeedback').style.display = 'block';
-				document.querySelector('#EMAIL').focus();
+				document.querySelector('#email').focus();
 			} else { // 중복 아님
 				emailDupChk = true;
 			    emailCheck = true;
