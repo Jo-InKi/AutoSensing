@@ -138,7 +138,6 @@
 
 	<script src="/assets/js/demo/jquery-3.6.4.min.js"></script>
 	<script src="/assets/js/demo/jquery.min.js"></script>
-	<script src="/assets/js/jstree.min.js"></script>
 	
 	<!-- SHA 256 script -->
 	<script src="/assets/vendor/crypto-js/4.1.1/core.min.js" type="text/javascript"></script>

@@ -4,8 +4,6 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<link href="/assets/css/style_jstree.css" rel="stylesheet" type="text/css">
-
 <!-- Begin Page Content -->
 <div class="container-fluid">
 

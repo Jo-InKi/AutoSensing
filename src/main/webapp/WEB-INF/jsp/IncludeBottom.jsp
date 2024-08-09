@@ -37,7 +37,6 @@
 		<script src="/assets/vendor/jquery-easing/jquery.easing.min.js" defer></script>
 
 		<!-- Custom scripts for all pages-->
-		<script src="/assets/js/jstree.min.js" defer></script>
 		<!-- <script src="/assets/js/sb-admin-2.min.js"></script> -->
 		<!-- <link rel="stylesheet" href="/assets/css/style.min.css" /> -->
 	</body>

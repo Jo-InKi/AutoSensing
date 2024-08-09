@@ -14,7 +14,6 @@
 			<div class="fc_888 divide" id="isRenewal"></div>
 		</div>
 		<div class="siteImage">
-
 			<c:choose>
 			    <c:when test="${empty currProject.mappath}">
 			        <img alt="Not MapFile" src="/img/no-image-icon.png" height="640px">

@@ -65,6 +65,9 @@ public class ProjectController {
 	@Autowired
 	UserService userService;
 
+	@Value("${autosensing.project.uploadpath.test}")
+	private String uploadpath_test;
+	
 	@Value("${autosensing.project.uploadpath}")
 	private String uploadpath;
 	
@@ -243,12 +246,24 @@ public class ProjectController {
 		List<MultipartFile> siteImages = request.getFiles("siteImages");
 		System.out.println("siteImages >>>> " + siteImages.size());
 
-		if (uploadpath == null || uploadpath.isEmpty()) {
-			uploadpath = System.getProperty("user.dir") + File.separatorChar + "image";
+		
+		String osName = System.getProperty("os.name").toLowerCase();
+		String mapPath = "";
+        if (osName.toLowerCase().contains("win")) 
+        {
+            mapPath = uploadpath_test;
+        } 
+        else if (osName.toLowerCase().contains("linux")) 
+        {
+        	mapPath = uploadpath;
+        }
+		
+		if (mapPath == null || mapPath.isEmpty()) {
+			mapPath = System.getProperty("user.dir") + File.separatorChar + "map";
 		}
-		System.out.println("uploadpath : " + uploadpath);
+		System.out.println("mapPath : " + mapPath);
 
-		String basePath = uploadpath + File.separatorChar + projectListDTO.getProjectid();
+		String basePath = mapPath + File.separatorChar + projectListDTO.getProjectid();
 		System.out.println("basePath : " + basePath);
 
 		File baseDir = new File(basePath);
