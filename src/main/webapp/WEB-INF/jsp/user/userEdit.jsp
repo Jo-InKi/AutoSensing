@@ -67,10 +67,7 @@
 							<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
 								<input type="email" id="email" name="email" size="80" maxlength="80" value="${user.email }" class="form-control" placeholder="이메일 입력">
-								<button class="btn btn-outline-info" type="button" id="sensoridIDduplicate_check" onClick="sensorIdDuplicationCheck();">중복 확인</button>
-								<div id="sensoridValidationFeedback" class="invalid-feedback"></div>
 							</div>
-							<span style="color:red;">${valid_email}</span>
 						</td>
 					</tr>
 					<tr>
@@ -78,10 +75,7 @@
 							<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
 								<input type="text" id="phone" name="phone" size="80" maxlength="80" value="${user.phone }" class="form-control" oninput="autoHyphen2(this)" placeholder="연락처 입력">
-								<button class="btn btn-outline-info" type="button" id="sensoridIDduplicate_check" onClick="sensorIdDuplicationCheck();">중복 확인</button>
-								<div id="sensoridValidationFeedback" class="invalid-feedback"></div>
 							</div>
-							<span style="color:red;">${valid_phone}</span>
 						</td>
 					</tr>
 					</tbody>

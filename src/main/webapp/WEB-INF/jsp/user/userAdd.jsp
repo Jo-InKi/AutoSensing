@@ -8,7 +8,7 @@
 <div class="container-fluid">
 
 	<!-- Page Heading -->
-	<h1 class="h3 mb-2 text-gray-800" style="font-family:'IBM Plex Sans KR';">츠로젝트 관리 > 센서 조회 > <span style="color:#0d6efd;">센서 추가</span></h1>
+	<h1 class="h3 mb-2 text-gray-800" style="font-family:'IBM Plex Sans KR';">사용자 관리 > 사용자 조회 > <span style="color:#0d6efd;">사용자 추가</span></h1>
 	<hr>
 	<!-- DataTales Example -->
 	<div class="card shadow mb-4">
@@ -23,7 +23,7 @@
 							<div class="input-group mb-3">
 							<select class="custom-select custom-select form-control form-control-sm" aria-label="Default select example" name="grade" id="grade" >
 									<option value='0002'>프로젝트 관리자</option>
-									<option value='0003'>일반 사용자</option>
+									<option value='0003' selected>일반 사용자</option>
 							</select>
 							</div>
 						</td>
@@ -32,9 +32,9 @@
 						<th class="tg-0lax">아이디&emsp; <a style="color:darkgrey;" data-bs-toggle="tooltip" data-bs-title="한글, 영문 및 숫자 3자~128자, 특수문자(-,_)만 허용, 중복 불가"><i class="fa-solid fa-circle-info"></i></a></th>
 						<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
-							<input type="text" id="sensorid" name="userid" size="124" maxlength="24" value="${user.userid }" class="form-control" oninput="resetSensorIdDuplicateChk" placeholder="사용자 아이디">
-							<button class="btn btn-outline-info" type="button" id="sensoridIDduplicate_check" onClick="sensorIdDuplicationCheck();">중복 확인</button>
-							<div id="sensoridValidationFeedback" class="invalid-feedback"></div></div>
+							<input type="text" id="userid" name="userid" size="124" maxlength="24" value="${user.userid }" class="form-control" oninput="resetIdDuplicateChk" placeholder="사용자 아이디">
+							<button class="btn btn-outline-info" type="button" id="useridIDduplicate_check" onClick="userIdDuplicationCheck();">중복 확인</button>
+							<div id="useridValidationFeedback" class="invalid-feedback"></div></div>
 							<span style="color:red;">${valid_userid}</span>
 						</td>
 					</tr>
@@ -50,7 +50,7 @@
 						<th class="tg-0lax">비밀번호</th>
 						<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
-								<input type="text" id="username" name="username" size="80" maxlength="80" value="${user.username }" class="form-control" placeholder="이름 입력">
+								<input type="password" id="passwd" name="passwd" size="80" maxlength="80" value="${user.passwd }" class="form-control" placeholder="비밀번호">
 							</div>
 						</td>
 					</tr>
@@ -58,8 +58,11 @@
 						<th class="tg-0lax">비밀번호 확인</th>
 						<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
-								<input type="text" id="username" name="username" size="80" maxlength="80" value="${user.username }" class="form-control" placeholder="이름 입력">
+								<input type="password" id="passwordConfirm" name="passwordConfirm" size="80" maxlength="80" value="${user.passwd }" class="form-control" placeholder="비밀번호 확인">
 							</div>
+							
+							<div id="passwordValidFeedback" class="valid-feedback"> 비밀번호가 일치합니다! </div>
+							<div id="passwordInvalidFeedback" class="invalid-feedback"> 비밀번호가 일치하지 않습니다. </div>
 						</td>
 					</tr>
 					<tr>
@@ -67,10 +70,7 @@
 							<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
 								<input type="email" id="email" name="email" size="80" maxlength="80" value="${user.email }" class="form-control" placeholder="이메일 입력">
-								<button class="btn btn-outline-info" type="button" id="sensoridIDduplicate_check" onClick="sensorIdDuplicationCheck();">중복 확인</button>
-								<div id="sensoridValidationFeedback" class="invalid-feedback"></div>
 							</div>
-							<span style="color:red;">${valid_email}</span>
 						</td>
 					</tr>
 					<tr>
@@ -78,10 +78,7 @@
 							<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
 								<input type="text" id="phone" name="phone" size="80" maxlength="80" value="${user.phone }" class="form-control" oninput="autoHyphen2(this)" placeholder="연락처 입력">
-								<button class="btn btn-outline-info" type="button" id="sensoridIDduplicate_check" onClick="sensorIdDuplicationCheck();">중복 확인</button>
-								<div id="sensoridValidationFeedback" class="invalid-feedback"></div>
 							</div>
-							<span style="color:red;">${valid_phone}</span>
 						</td>
 					</tr>
 					</tbody>
