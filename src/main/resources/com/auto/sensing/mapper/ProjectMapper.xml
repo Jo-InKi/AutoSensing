@@ -6,7 +6,9 @@
 			  projectid
 			, projectname
 			, company
-			, address
+			, zipcode
+			, address1
+			, address2
 			, mappath
 			, emname
 			, phone
@@ -73,7 +75,9 @@
 			  projectid
 			, projectname
 			, company
-			, address
+			, zipcode
+			, address1
+			, address2
 			, mappath
 			, emname
 			, phone
@@ -99,7 +103,9 @@
 			  projectid
 			, projectname
 			, company
-			, address
+			, zipcode
+			, address1
+			, address2
 			, mappath
 			, emname
 			, phone
@@ -109,7 +115,9 @@
 			  #{projectid}
 			, #{projectname}
 			, #{company}
-			, #{address}
+			, #{zipcode}
+			, #{address1}
+			, #{address2}
 			, #{mappath}
 			, #{emname}
 			, #{phone}
@@ -121,7 +129,9 @@
 	UPDATE project_tb SET
 	          projectname = #{projectname}
 	        , company = #{company}
-	        , address = #{address}
+	        , zipcode = #{zipcode}
+			, address1 = #{address1}
+			, address2 = #{address2}
 	        , mappath = IFNULL(#{mappath}, mappath)
 	        , emname = #{emname}
 	        , phone = #{phone}

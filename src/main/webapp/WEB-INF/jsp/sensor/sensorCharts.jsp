@@ -25,8 +25,8 @@
 			chart.data.push(item${status.index});
 		</c:forEach>
 		
- 		$("#date_time_start").val(chart.data[chart.data.length-1].time);
-		$("#date_time_end").val(chart.data[0].time);
+ 		$("#date_time_end").val(chart.data[chart.data.length-1].time);
+		$("#date_time_start").val(chart.data[0].time);
 
 	    // Set input format for the dates
 	    chart.dateFormatter.inputDateFormat = "yyyy-MM-dd HH";
@@ -118,5 +118,14 @@
 		console.log(document.querySelector('#tab1'));
 		console.log(document.querySelector('#tab2'));
 		console.log(document.querySelector('#tab3')); */
+	}
+	
+	function downloadExcel() {
+		console.log('${sensor.sensorid}', '${sensor.channel}', '${sensor.sensorname}');
+	    date_time_start = $('#date_time_start').val()
+	    date_time_end = $('#date_time_end').val()
+	    console.log(date_time_start, date_time_end);
+	    
+	    location.href = '/sensor/excel/download?sensorid=' + '${sensor.sensorid}' + '&channel=' + '${sensor.channel}';
 	}
 </script>

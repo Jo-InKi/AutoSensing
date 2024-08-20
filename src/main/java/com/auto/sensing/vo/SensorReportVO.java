@@ -1,4 +1,4 @@
-package com.auto.sensing.dto;
+package com.auto.sensing.vo;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class SensorReportDTO {
+public class SensorReportVO {
 	private String	time;
 	private double	aiv;
 	private double	value;

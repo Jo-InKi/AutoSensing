@@ -1,8 +1,6 @@
 package com.auto.sensing.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.auto.sensing.dao.SensorDAO;
 import com.auto.sensing.dto.SensorCompanyDTO;
 import com.auto.sensing.dto.SensorDTO;
-import com.auto.sensing.dto.SensorReportDTO;
 import com.auto.sensing.vo.PageVO;
+import com.auto.sensing.vo.SensorReportVO;
 
 @Service
 public class SensorService {
@@ -35,7 +33,7 @@ public class SensorService {
 		return sensorDAO.selectSensorList(location_sn);
 	}
 	
-	public List <SensorReportDTO> getSensorReport (String sensorid, long channel, String sdatetime, String edatetime)	{
+	public List <SensorReportVO> getSensorReport (String sensorid, long channel, String sdatetime, String edatetime)	{
 		return sensorDAO.getSensorReport(sensorid, channel, sdatetime, edatetime);
 	}
 

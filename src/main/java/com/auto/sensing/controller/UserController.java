@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.auto.sensing.dto.LocationDTO;
@@ -103,6 +105,18 @@ public class UserController {
 		model.addAttribute("user", userinfo);
 
 		return "/user/userEdit";
+	}
+	
+	// 아이디 중복 검사
+	@PostMapping("/user/duplication/check.do")
+	public @ResponseBody int isDuplicated(@RequestParam(value = "userid") String userid) throws Exception {
+		System.out.println("isDuplicated : " + userid);
+
+		if (userService.selectUSerByUserID(userid) != null) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 }

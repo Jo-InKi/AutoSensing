@@ -9,20 +9,18 @@
 	    var element = document.querySelector('#idToolTip');
 	    var checkString = "^";
 	    var checkToolTip = "";
-	    if("${idSet.id_upp}" == "TRUE") {
-	        checkString += "(?=.*[A-Z])";
-	        checkToolTip += "영문 대문자, ";
-	    }
-	    if("${idSet.id_num}" == "TRUE") {
-	        checkString += "(?=.*[0-9])";
-	        checkToolTip += "숫자, ";
-	    }
+
+        checkString += "(?=.*[A-Z])";
+        checkToolTip += "영문 대문자, ";
+        checkString += "(?=.*[0-9])";
+        checkToolTip += "숫자, ";
+
 	    if(checkToolTip != ""){
 	        checkToolTip = checkToolTip.slice(0, -2);
 	        checkToolTip += " 포함, ";
 	    }
-	    checkString += "[가-힣a-zA-Z0-9_\-]{" + ${idSet.id_len} + ",16}$";
-	    checkToolTip += ${idSet.id_len} + "자리 이상";
+	    checkString += "[가-힣a-zA-Z0-9_\-]{8,16}$";
+	    checkToolTip += "8자리 이상";
 	    
 	    if (element != null){
 	    	element.setAttribute('data-bs-title', checkToolTip);
@@ -123,7 +121,6 @@ function resetIdDuplicateChk(){
 //아이디 중복확인
 function userIdDuplicationCheck(){
 	var userId = document.querySelector('#userid').value;
-	var prv_userId = '${user.userid}';
 	
 	if(!document.querySelector('#userid').value || userId == '' || userId == null){
 		alert("아이디를 입력하세요!");
@@ -134,10 +131,9 @@ function userIdDuplicationCheck(){
 	
 	$.ajax({
 		type : "POST", 
-		url : "/vpn/settings/add/user/duplication/check.do", 
+		url : "/user/duplication/check.do", 
 		data : { 
-			"id" : userId,
-			"prv_userId": prv_userId
+			"userid" : userId
 		},
 		success : function(data) {
 		if(document.querySelector('#userid').value){
@@ -153,46 +149,48 @@ function userIdDuplicationCheck(){
 				idDupChk = true;
 				idCheck = true;
 				changeBtn();
-				if(userId == prv_userId){
-			    	alert("현재 아이디와 동일합니다.");
-			    	document.querySelector('#userid').className = 'table_input is-valid';
-			    	return;
-				}
-					document.querySelector('#useridValidationFeedback').style.display = 'none';
-			    	alert("사용 가능한 아이디 입니다!");
-			    	document.querySelector('#userid').className = 'table_input is-valid';
-				}
+		    	alert("사용 가능한 아이디 입니다!");
+		    	$("#userid").attr('class', 'form-control is-valid');
 			}
-		}
+		}}
 	});
 }
 
+$(function() { 
+	$("#userid").keyup(function() {
+		userIdValidating();
+		changeBtn();
+	});
+});
 
-//아이디 확인
-if(document.querySelector('#userid')) document.querySelector('#userid').addEventListener('keyup',function(el) {
+document.addEventListener('DOMContentLoaded', function () {
+    // 페이지 로드 시 유효성 검사 수행
+    userIdValidating();
+});
+
+//아이디 유효성 검사
+function userIdValidating(){
 	var idCheck = RegExp(idCheckString);
-	let id = document.querySelector('#userid').value;
+	let id = $("#userid").val();
+	$("#IDduplicate_check").prop('disabled', false);
+	console.log(idCheckString);
 	
-	document.querySelector('#useridIDduplicate_check').disabled = false;
 	if(!idCheck.test(id)){
-		document.querySelector('#userid').className = 'table_input is-invalid';
-		document.querySelector('#useridValidationFeedback').innerHTML = '아이디 형식을 확인하세요.';
-		document.querySelector('#useridValidationFeedback').style.display = 'block';
-		document.querySelector('#useridIDduplicate_check').disabled = true;
+		$("#userid").attr('class', 'form-control is-invalid');
+		$("#useridValidationFeedback").html("아이디 형식을 확인하세요.");
+		$("#useridIDduplicate_check").prop('disabled', true);
 		idCheck = false;
 	}else if(idDupChk == false){
-		document.querySelector('#userid').className = 'table_input is-invalid';
-		document.querySelector('#useridValidationFeedback').innerHTML = '아이디 중복 검사가 필요합니다.';
-		document.querySelector('#useridValidationFeedback').style.display = 'block';
-		document.querySelector('#useridIDduplicate_check').disabled = false;
+		$("#userid").attr('class', 'form-control is-invalid');
+		$("#useridValidationFeedback").html("아이디 중복 검사가 필요합니다.");
+		$("#useridIDduplicate_check").prop('disabled', false);
 		idCheck = false;
 	}else{
-		document.querySelector('#useridValidationFeedback').style.display = 'none';
-		document.querySelector('#userid').className = 'table_input is-valid';
+		$("#userid").attr('class', 'form-control is-valid');
+		$("#user_id_valid").hide();
 		idCheck = true;
 	}
-	changeBtn();
-});
+}
 		
 		changeBtn();
 		

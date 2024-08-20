@@ -19,7 +19,7 @@
 					<tbody>
 					<tr>
 						<th class="tg-0lax">프로젝트 아이디&emsp; <a style="color:darkgrey;" data-bs-toggle="tooltip" data-bs-title="한글, 영문 및 숫자 3자~128자, 특수문자(-,_)만 허용, 중복 불가"><i class="fa-solid fa-circle-info"></i></a></th>
-							<td class="tg-0lax" colspan="2">
+							<td class="tg-0lax">
 							<div class="input-group mb-3">
 							<input type="text" id="projectid" name="projectid" size="124" maxlength="12" value="${project.projectid }" class="form-control" oninput="resetprojectIdDuplicateChk" placeholder="프로젝트 아이디 입력">
 							<button class="btn btn-outline-info" type="button" id="projectidDuplicate_check" onClick="projectIdDuplicationCheck();">중복 확인</button>
@@ -29,7 +29,7 @@
 					</tr>
 					<tr>
 						<th class="tg-0lax">프로젝트 명칭(Kr)&emsp; <a style="color:darkgrey;" data-bs-toggle="tooltip" data-bs-title="한글, 영문 및 숫자 3자~128자, 특수문자(-,_)만 허용, 중복 불가"><i class="fa-solid fa-circle-info"></i></a></th>
-							<td class="tg-0lax" colspan="2">
+							<td class="tg-0lax">
 							<div class="input-group mb-3">
 							<input type="text" id="projectname" name="projectname" size="124" maxlength="128" value="${project.projectname }" class="form-control" oninput="resetprojectnameDuplicateChk" placeholder="프로젝트 한글명 입력">
 							<button class="btn btn-outline-info" type="button" id="projectnameDuplicate_check" onClick="projectnameDuplicationCheck();">중복 확인</button>
@@ -39,7 +39,7 @@
 					</tr>
 					<tr>
 						<th class="tg-0lax">프로젝트 명칭(En)&emsp; <a style="color:darkgrey;" data-bs-toggle="tooltip" data-bs-title="한글, 영문 및 숫자 3자~128자, 특수문자(-,_)만 허용, 중복 불가"><i class="fa-solid fa-circle-info"></i></a></th>
-							<td class="tg-0lax" colspan="2">
+							<td class="tg-0lax">
 							<div class="input-group mb-3">
 							<input type="text" id="emname" name="emname" size="124" maxlength="128" value="${project.emname }" class="form-control" oninput="resetemnameDuplicateChk" placeholder="프로젝트 한글명 입력">
 							<button class="btn btn-outline-info" type="button" id="emnameDuplicate_check" onClick="emnameDuplicationCheck();">중복 확인</button>
@@ -49,15 +49,36 @@
 					</tr>
 					<tr>
 						<th class="tg-0lax">회사명</th>
-							<td class="tg-0lax" colspan="2">
+							<td class="tg-0lax">
 							<div class="input-group mb-3">
 								<input type="text" id="company" name="company" size="80" maxlength="80" value="${project.company }" class="form-control" placeholder="회사명 입력">
 							</div>
 						</td>
 					</tr>
 					<tr>
+						<th class="tg-0lax">주소</th>
+							<td class="tg-0lax">
+							<div class="input-group mb-3">
+								<p>
+									<input type="text" id="zipcode" name="zipcode" size="20" maxlength="20" value="${project.address }" class="form-control" placeholder="우편번호" readonly>
+								</p>
+								&emsp;
+								<p>
+									<button class="btn btn-outline-info" type="button" id="emnameDuplicate_check" onClick="execDaumPostcode();">우편번호 찾기</button>
+								</p>
+								&emsp;
+								<p>
+									<input type="text" id="address1" name="address1" size="80" maxlength="80" value="${project.address }" class="form-control" placeholder="도로명 주소" readonly>
+ 								</p>
+								<p>
+									<input type="text" id="address2" name="address2" size="80" maxlength="80" value="${project.address }" class="form-control" placeholder="상세 주소">
+								</p>
+							</div>
+						</td>
+					</tr>
+					<tr>
 						<th class="tg-0lax">E-mail</th>
-							<td class="tg-0lax" colspan="2">
+							<td class="tg-0lax">
 							<div class="input-group mb-3">
 								<input type="email" id="email" name="email" size="80" maxlength="80" value="${project.email }" class="form-control" placeholder="이메일 입력">
 							</div>
@@ -65,7 +86,7 @@
 					</tr>
 					<tr>
 						<th class="tg-0lax">연락처</th>
-							<td class="tg-0lax" colspan="2">
+							<td class="tg-0lax">
 							<div class="input-group mb-3">
 								<input type="text" id="phone" name="phone" size="80" maxlength="80" value="${project.phone }" class="form-control" oninput="autoHyphen2(this)" placeholder="연락처 입력">
 							</div>
@@ -86,7 +107,7 @@
 					</c:if>
 					<tr>
 						<th class="tg-0lax">현장 이미지</th>
-							<td class="tg-0lax" colspan="2">
+							<td class="tg-0lax">
 							<div class="input-group mb-3">
 								<input type="file" accept=".jpg, .jpeg, .png" id="siteImages" name="siteImages" multiple class="form-control">
 							</div>

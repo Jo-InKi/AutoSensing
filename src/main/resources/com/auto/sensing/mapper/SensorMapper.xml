@@ -162,7 +162,7 @@
 		</where>
 	</select>
 	<select id="selectSensorReport" parameterType="Map"
-		resultType="com.auto.sensing.dto.SensorReportDTO">
+		resultType="com.auto.sensing.vo.SensorReportVO">
 			SELECT
 				TB.keytime as time
 				, AVG(TB.aiv) as aiv

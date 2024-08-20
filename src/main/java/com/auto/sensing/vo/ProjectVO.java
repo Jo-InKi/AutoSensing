@@ -11,7 +11,9 @@ public class ProjectVO {
 	private String	projectid;
 	private	String	projectname;
 	private	String	company;
-	private	String	address;
+	private	String	zipcode;
+	private	String	address1;
+	private	String	address2;
 	private	String	mappath;
 	private String	emname;
 	private String	phone;

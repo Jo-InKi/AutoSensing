@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.auto.sensing.dto.ExcelReportDTO;
 import com.auto.sensing.dto.MessageDTO;
 import com.auto.sensing.dto.SensorCompanyDTO;
 import com.auto.sensing.dto.SensorDTO;
@@ -33,10 +34,12 @@ import com.auto.sensing.dto.UserInfoDTO;
 import com.auto.sensing.service.LocationService;
 import com.auto.sensing.service.ProjectService;
 import com.auto.sensing.service.SensorService;
+import com.auto.sensing.utils.ExcelUtils;
 import com.auto.sensing.vo.LocationVO;
 import com.auto.sensing.vo.PageDTO;
 import com.auto.sensing.vo.PageVO;
 import com.auto.sensing.vo.ProjectVO;
+import com.auto.sensing.vo.SensorReportVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -52,6 +55,10 @@ public class SensorController {
 	
 	@Autowired
 	private SensorService sensorService;
+	
+	@Autowired
+    private final ExcelUtils excelUtils;
+
 	
 	@GetMapping("/sensor/sensorlist")
 	public String ViewSensorList (@RequestParam("page") int num, @RequestParam("amount") int amount, PageVO page, Model model, HttpSession httpSession)	{
@@ -259,7 +266,7 @@ public class SensorController {
 		UserInfoDTO ui = (UserInfoDTO)httpSession.getAttribute("userinfo");
 		if (ui == null)	{
 			// login전이므로 접근실패 처리해야함
-			return "login";
+			return "redirect:/";
 		}
 		String projectid = ui.getProjectid();
 		
@@ -283,15 +290,15 @@ public class SensorController {
 		// todo : 현재는 DEFAULT상태 filter가 들어오면 들어온 STRING을사용해야함
 		String edatetime = now.format (DateTimeFormatter.ofPattern("yyyy-MM-dd HH:00:00"));
 		String sdatetime = now.plus(-10, ChronoUnit.DAYS).format (DateTimeFormatter.ofPattern("yyyy-MM-dd HH:00:00"));
-		List<SensorReportDTO> sensorReport = sensorService.getSensorReport(sensorid, channel, sdatetime, edatetime);
+		List<SensorReportVO> sensorReport = sensorService.getSensorReport(sensorid, channel, sdatetime, edatetime);
 		System.out.println(sensorReport.toString());
 		System.out.println("sensorReport : " + sensorid + ", "+ channel + ", "+ sdatetime + ", "+ edatetime + ", " + calcString);
 		
-		List<SensorReportDTO> report = new ArrayList<SensorReportDTO>();
+		List<SensorReportVO> report = new ArrayList<SensorReportVO>();
 
 		ScriptEngineManager mgr = new ScriptEngineManager();
 		ScriptEngine engine = mgr.getEngineByName("JavaScript");
-		for (SensorReportDTO sr : sensorReport)	{
+		for (SensorReportVO sr : sensorReport)	{
 			if (calcString == null)	sr.setValue(sr.getAiv());
 			else	{
 				String calcStr = calcString.replaceAll("\\$X", Double.toString(sr.getAiv()));
@@ -321,5 +328,32 @@ public class SensorController {
 		System.out.println (sensorCompany);
 		return sensorCompany;
 	}
+	
+	
+	 @GetMapping("/sensor/excel/download")
+    public void excelDownLoad(@RequestParam(value = "sensorid", required = true) String sensorid,
+			@RequestParam(value = "channel", required = true) Long channel, HttpServletResponse response) {
+		 
+			SensorDTO sensor = sensorService.selectSensor(null, sensorid, channel);
+			String name = sensor.getSensorname();
+			String calcString = sensor.getCalcstring();
+			// sensor하나에 대한 내용 표기 해야 함
+			System.out.println(sensorid + "+" + channel);
+			
+			LocalDateTime now = LocalDateTime.now().plus(-1, ChronoUnit.HOURS);
+			// todo : 현재는 DEFAULT상태 filter가 들어오면 들어온 STRING을사용해야함
+			String edatetime = now.format (DateTimeFormatter.ofPattern("yyyy-MM-dd HH:00:00"));
+			String sdatetime = now.plus(-10, ChronoUnit.DAYS).format (DateTimeFormatter.ofPattern("yyyy-MM-dd HH:00:00"));
+			List<SensorReportVO> sensorReport = sensorService.getSensorReport(sensorid, channel, sdatetime, edatetime);
+			System.out.println(sensorReport.toString());
+			System.out.println("sensorReport : " + sensorid + ", "+ channel + ", "+ sdatetime + ", "+ edatetime + ", " + calcString);
+			
+			List<ExcelReportDTO> report = new ArrayList<ExcelReportDTO>();
+			for (SensorReportVO sr : sensorReport)	{
+				report.add(new ExcelReportDTO(name, sr));
+			}
+			
+			excelUtils.sensorExcelDownload(report, response);
 
+    }
 }

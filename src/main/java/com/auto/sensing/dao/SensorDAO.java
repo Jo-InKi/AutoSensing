@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.auto.sensing.dto.SensorCompanyDTO;
 import com.auto.sensing.dto.SensorDTO;
-import com.auto.sensing.dto.SensorReportDTO;
 import com.auto.sensing.vo.PageVO;
+import com.auto.sensing.vo.SensorReportVO;
 
 @Repository("SensorDAO")
 public class SensorDAO {
@@ -37,7 +37,7 @@ public class SensorDAO {
 		return sqlSession.selectList("SensorMapper.selectSensorListLocationSN", location_sn);
 	}
 	
-	public List <SensorReportDTO> getSensorReport (String sensorid, long channel, String sdatetime, String edatetime)	{
+	public List <SensorReportVO> getSensorReport (String sensorid, long channel, String sdatetime, String edatetime)	{
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("sensorid", sensorid);
 		param.put("channel", channel);

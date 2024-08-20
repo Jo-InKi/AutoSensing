@@ -26,11 +26,10 @@
 				<tr>
 					<td class="col-sm-1 text-center align-middle">시작일시</td>
 					<td >
-<!-- 						<input type="datetime-local" name="startTime" id="startTime"> -->
-						                    <div class="uk-inline">
-                        <span class="uk-form-icon" uk-icon="icon: calendar"></span>
-                        <input class="uk-input" type="text" id="date_time_start">
-                    </div>
+						<div class="uk-inline">
+	                        <span class="uk-form-icon" uk-icon="icon: calendar"></span>
+	                        <input class="uk-input" type="text" id="date_time_start">
+		                    </div>
 					</td>
 					<td class="col-sm-1 text-center align-middle">종료일시</td>
 					<td >
@@ -142,6 +141,11 @@
 						<!-- 접속 사용자 추이 graph -->
 						<div class="col-xl-12 col-lg-12">
 							<div class="card shadow">
+								<hr>
+								<div align="right">
+									<button type="button" class="btn btn-primary">REPORT</button>
+									<button type="button" class="btn btn-secondary" onClick="downloadExcel();">EXCEL</button>
+								</div>
 								<!-- Card Body -->
 								<div class="card-body">
 									<div align="left" class="text-gray-900">총 ${pageMaker.realEnd}페이지 중 ${pageMaker.page.pageNum}</div>
