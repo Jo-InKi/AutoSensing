@@ -42,7 +42,7 @@
 									</div>
 								</c:if>
 								<c:forEach var="sensor" items="${manSensorList[location.location_sn]}">
-									<a id="sensorTab_${sensor.sensorid}_${sensor.channel}" class="collapse-item" href="/sensor/detail?sensorid=${sensor.sensorid}&channel=${sensor.channel}">${sensor.sensorname}</a>
+									<a id="sensorTab_${sensor.sensorid}_${sensor.channel}" class="collapse-item" href="/sensor/detail?sensorid=${sensor.sensorid}&channel=${sensor.channel}&page=1&amount=10">${sensor.sensorname}</a>
 								</c:forEach>
 		                    </div>
 		                </div>

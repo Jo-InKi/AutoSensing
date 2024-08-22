@@ -21,7 +21,7 @@
 	</select>
 
 	<select id="selectSensorListByProjectID" parameterType="String"
-		resultType="com.auto.sensing.dto.SensorDTO">
+		resultType="com.auto.sensing.vo.SensorVO">
 		SELECT
 			sensorid
 			, channel
@@ -56,7 +56,7 @@
 		</where>
 	</select>
 	
-	<select id="selectSensorListByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="com.auto.sensing.dto.SensorDTO">
+	<select id="selectSensorListByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="com.auto.sensing.vo.SensorVO">
 		SELECT
 			*
 		FROM sensor_tb
@@ -89,7 +89,7 @@
 
 	
 	<select id="selectSensorListLocationSN" parameterType="String"
-		resultType="com.auto.sensing.dto.SensorDTO">
+		resultType="com.auto.sensing.vo.SensorVO">
 		SELECT
 			sensorid
 			, channel
@@ -124,7 +124,7 @@
 		</where>
 	</select>
 	<select id="selectSensor" parameterType="Map"
-		resultType="com.auto.sensing.dto.SensorDTO">
+		resultType="com.auto.sensing.vo.SensorVO">
 		SELECT
 			sensorid
 			, channel
@@ -161,8 +161,8 @@
 			</if>
 		</where>
 	</select>
-	<select id="selectSensorReport" parameterType="Map"
-		resultType="com.auto.sensing.vo.SensorReportVO">
+	
+	<select id="selectSensorReport" parameterType="Map" resultType="com.auto.sensing.vo.SensorReportVO">
 			SELECT
 				TB.keytime as time
 				, AVG(TB.aiv) as aiv
@@ -180,7 +180,119 @@
 			GROUP BY TB.keytime
 			ORDER BY TB.keytime ASC
 	</select>
-	<insert id="insertSensor" parameterType="com.auto.sensing.dto.SensorDTO">
+	
+	<select id="selectSensorReportByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="com.auto.sensing.vo.SensorReportVO">
+		SELECT
+			time AS 'time'
+			,avi AS 'avi'
+			,0 AS 'value'
+		FROM (
+			SELECT
+				CEIL(TB1.date_idx/1) AS date_idx
+				,LPAD(TB1.time_idx - 1, '2', '0') AS time_idx
+				,CONCAT_WS(' ', TB1.keydate, TB1.keytime) AS time
+				, TB1.keydate AS keydate
+				, TB1.keytime AS keytime
+				,IFNULL(TB2.avi, 0) AS avi
+			FROM (
+				SELECT
+					RANK() OVER (PARTITION BY keytime ORDER BY keydate ASC) AS date_idx 
+					, ROW_NUMBER() OVER (PARTITION BY keydate ORDER BY keytime ASC) AS time_idx
+					, TB.*
+				 FROM (
+				 	WITH RECURSIVE DatetimeRange AS (
+					    SELECT STR_TO_DATE(#{search.sdatetime}, '%Y-%m-%d %H:00') AS date
+					    UNION ALL
+					    SELECT DATE_ADD(date, INTERVAL 1 HOUR)
+					    FROM DatetimeRange
+					    WHERE <![CDATA[date < STR_TO_DATE(#{search.edatetime}, '%Y-%m-%d %H:00')]]>
+					)
+					SELECT
+						date_format(date, '%Y-%m-%d') AS keydate
+						,date_format(date, '%H:00') AS keytime
+					FROM DatetimeRange
+				) TB
+			) TB1
+			LEFT JOIN (
+				SELECT
+					date_format(time, '%Y-%m-%d') as keydate
+					,date_format(time, '%H:00') as keytime
+					,AVG(aiv) AS avi
+				FROM sensor_report
+				WHERE sensorid = #{search.sensorid}
+				AND channel = #{search.channel}
+				AND <![CDATA[time >= #{search.sdatetime}]]>
+				AND <![CDATA[time <= #{search.edatetime}]]>
+				GROUP BY keydate, keytime
+			) TB2
+			ON TB1.keydate = TB2.keydate AND TB1.keytime = TB2.keytime
+		) TB
+		ORDER BY keydate, keytime ASC
+		LIMIT ${amount} OFFSET ${(pageNum-1)*amount};
+	
+<!-- 	
+		SELECT
+			TB.keytime as time
+			, AVG(TB.aiv) as aiv
+		FROM (
+			SELECT
+				date_format(time, '%Y-%m-%d %H:00') as keytime
+				,time
+				,aiv
+			FROM sensor_report
+			<trim prefix="where" prefixOverrides="AND">
+				<if test="search.sensorid != null and search.sensorid !=''">
+					sensorid = #{search.sensorid}
+				</if>
+				<if test="search.channel != -1">
+					AND channel = #{search.channel}
+				</if>
+				<if test="search.sdatetime != null and search.sdatetime !=''">
+					AND <![CDATA[time >= #{search.sdatetime}]]>
+				</if>
+				<if test="search.edatetime != null and search.edatetime !=''">
+					AND <![CDATA[time <= #{search.edatetime}]]>
+				</if>
+				<if test="search.keyword != null and search.keyword !=''">
+				</if>
+			</trim>
+		) TB
+		GROUP BY TB.keytime
+		ORDER BY TB.keytime ASC
+		LIMIT ${amount} OFFSET ${(pageNum-1)*amount};
+ -->
+	</select>
+
+	<select id="selectSensorReportCntByPage" parameterType="com.auto.sensing.vo.PageVO" resultType="Integer">
+		SELECT
+			COUNT(*)
+		FROM (
+			SELECT
+				date_format(time, '%Y-%m-%d %H:00') as keytime
+				,time
+				,aiv
+			FROM sensor_report
+			<trim prefix="where" prefixOverrides="AND">
+				<if test="search.sensorid != null and search.sensorid !=''">
+					sensorid = #{search.sensorid}
+				</if>
+				<if test="search.channel != -1">
+					AND channel = #{search.channel}
+				</if>
+				<if test="search.sdatetime != null and search.sdatetime !=''">
+					AND <![CDATA[time >= #{search.sdatetime}]]>
+				</if>
+				<if test="search.edatetime != null and search.edatetime !=''">
+					AND <![CDATA[time <= #{search.edatetime}]]>
+				</if>
+				<if test="search.keyword != null and search.keyword !=''">
+				</if>
+			</trim>
+			GROUP BY keytime
+		) TB
+	</select>
+	
+	<insert id="insertSensor" parameterType="com.auto.sensing.vo.SensorVO">
 	INSERT INTO sensor_tb
 	(
             sensorid
@@ -232,7 +344,7 @@
 			, #{location_sn}
 	)
 	</insert>
-	<update id="updateSensor" parameterType="com.auto.sensing.dto.SensorDTO">
+	<update id="updateSensor" parameterType="com.auto.sensing.vo.SensorVO">
 	UPDATE sensor_tb SET
               sensorname      = #{sensorname}
             , initdate      = #{initdate}

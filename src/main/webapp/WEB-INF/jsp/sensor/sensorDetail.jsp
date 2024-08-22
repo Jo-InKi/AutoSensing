@@ -9,6 +9,8 @@
 <script src="/assets/js/uikit-icons.min.js"></script>
 <script src="/assets/js/jquery.js"></script>
 <script src="/assets/js/jquery.datetimepicker.full.min.js"></script>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
 
 <!-- Begin Page Content -->
@@ -19,7 +21,7 @@
 	<hr>
 	<div class="col-sm-12">
 	<form:form modelAttribute="userSearchForm" id="userSearchForm"
-		action="/vpn/settings/user/search.do" method="post">
+		action="/sensor/detail" method="get">
 		<input type="hidden" name="pageNum" id="pageNum" value="1" />
 		<table class="table table-bordered" id="SearchTable">
 			<tbody>
@@ -27,7 +29,7 @@
 					<td class="col-sm-1 text-center align-middle">시작일시</td>
 					<td >
 						<div class="uk-inline">
-	                        <span class="uk-form-icon" uk-icon="icon: calendar"></span>
+		                     <span class="uk-form-icon uk-icon" uk-icon="icon: calendar"><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M 2,3 2,17 18,17 18,3 2,3 Z M 17,16 3,16 3,8 17,8 17,16 Z M 17,7 3,7 3,4 17,4 17,7 Z"></path><rect width="1" height="3" x="6" y="2"></rect><rect width="1" height="3" x="13" y="2"></rect></svg></span>
 	                        <input class="uk-input" type="text" id="date_time_start">
 		                    </div>
 					</td>
@@ -42,7 +44,7 @@
 					</td>
 					<td colspan="2">
 						<select class="uk-select w-100" id="time">
-	                        <option selected="" value="">시각</option>
+	                        <option value="" selected>시각</option>
 	                        <option value="01">1시</option>
 	                        <option value="02">2시</option>
 	                        <option value="03">3시</option>
@@ -71,7 +73,7 @@
 					</td>
 					<td colspan="2">
 					<select class="uk-select w-100" id="intervalday">
-	                       <option selected="" value="">평균</option>
+	                       <option value="0" selected>평균</option>
 	                       <option value="1">1일</option>
 	                       <option value="2">2일</option>
 	                       <option value="3">3일</option>
@@ -125,6 +127,8 @@
 						<!-- 접속 사용자 추이 graph -->
 						<div class="col-xl-12 col-lg-12">
 							<div class="card shadow">
+								<div align="left" class="text-gray-900">변화량(mm)</div>
+								<div align="left" class="text-gray-900">Initial Date : ${sensor.initdate }</div>
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-area">
@@ -143,11 +147,12 @@
 							<div class="card shadow">
 								<hr>
 								<div align="right">
-									<button type="button" class="btn btn-primary">REPORT</button>
+									<button type="button" class="btn btn-primary" onclick="saveChartAsPDF()">REPORT</button>
 									<button type="button" class="btn btn-secondary" onClick="downloadExcel();">EXCEL</button>
 								</div>
 								<!-- Card Body -->
 								<div class="card-body">
+									<div align="left" class="text-gray-900">Initial Date : ${sensor.initdate }</div>
 									<div align="left" class="text-gray-900">총 ${pageMaker.realEnd}페이지 중 ${pageMaker.page.pageNum}</div>
 									<hr />
 											<span style="color: green;">${successMsg}</span>

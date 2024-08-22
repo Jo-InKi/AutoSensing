@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.auto.sensing.dto.SensorCompanyDTO;
-import com.auto.sensing.dto.SensorDTO;
 import com.auto.sensing.vo.PageVO;
+import com.auto.sensing.vo.SensorVO;
 import com.auto.sensing.vo.SensorReportVO;
 
 @Repository("SensorDAO")
@@ -21,11 +21,11 @@ public class SensorDAO {
     @Qualifier("SqlSessionTemplate")
     private SqlSessionTemplate sqlSession;
 	
-	public List <SensorDTO> selectSensorList(String projectid)	{
+	public List <SensorVO> selectSensorList(String projectid)	{
 		return sqlSession.selectList("SensorMapper.selectSensorListByProjectID", projectid);
 	}
 	
-	public List <SensorDTO> selectSensorListByPage(PageVO page)	{
+	public List <SensorVO> selectSensorListByPage(PageVO page)	{
 		return sqlSession.selectList("SensorMapper.selectSensorListByPage", page);
 	}
 	
@@ -33,7 +33,7 @@ public class SensorDAO {
 		return sqlSession.selectOne("SensorMapper.selectSensorCntByPage", page);
 	}
 	
-	public List <SensorDTO> selectSensorList(int location_sn)	{
+	public List <SensorVO> selectSensorList(int location_sn)	{
 		return sqlSession.selectList("SensorMapper.selectSensorListLocationSN", location_sn);
 	}
 	
@@ -45,16 +45,24 @@ public class SensorDAO {
 		param.put("edatetime", edatetime);
 		return sqlSession.selectList("SensorMapper.selectSensorReport", param);
 	}
+	
+	public List <SensorReportVO> selectSensorReportByPage (PageVO page)	{
+		return sqlSession.selectList("SensorMapper.selectSensorReportByPage", page);
+	}
+	
+	public int selectSensorReportCntByPage (PageVO page)	{
+		return sqlSession.selectOne("SensorMapper.selectSensorReportCntByPage", page);
+	}
 
-	public long insertSensor(SensorDTO sensorDTO)	{
+	public long insertSensor(SensorVO sensorDTO)	{
 		return sqlSession.insert("SensorMapper.insertSensor", sensorDTO);
 	}
 
-	public long updateSensor(SensorDTO sensorDTO)	{
+	public long updateSensor(SensorVO sensorDTO)	{
 		return sqlSession.update("SensorMapper.updateSensor", sensorDTO);
 	}
 
-	public SensorDTO selectSensor (String projectid, String sensorid, long channel)	{
+	public SensorVO selectSensor (String projectid, String sensorid, long channel)	{
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("projectid", projectid);
 		param.put("sensorid", sensorid);

@@ -22,6 +22,7 @@
 						<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
 							<select class="custom-select custom-select form-control form-control-sm" aria-label="Default select example" name="projectid" id="projectid" onchange="projectChange(this.value)">
+								<option>프로젝트 선택</option>
 								<c:forEach var="project" items="${manProjectlist}" varStatus="projec_index">
 									<option value='${project.projectid }'>${project.projectname }</option>
 								</c:forEach>
@@ -33,7 +34,8 @@
 						<th class="tg-0lax">설치 위치&emsp;</th>
 						<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
-							<select class="custom-select custom-select form-control form-control-sm" aria-label="Default select example" name="location_sn" id="location_sn">
+							<select class="custom-select custom-select form-control form-control-sm" aria-label="Default select example" name="location_sn" id="location_sn">\
+							<option>센서 설치 위치 선택</option>
 								<c:forEach var="location" items="${locationList }">
 									<option value='${location.location_sn }'>${location.location_nm }</option>
 								</c:forEach>

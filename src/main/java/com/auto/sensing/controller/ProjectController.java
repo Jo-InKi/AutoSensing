@@ -30,7 +30,6 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.auto.sensing.dto.MessageDTO;
 import com.auto.sensing.dto.ProjectDTO;
-import com.auto.sensing.dto.SensorDTO;
 import com.auto.sensing.dto.UserInfoDTO;
 import com.auto.sensing.service.LocationService;
 import com.auto.sensing.service.ProjectManService;
@@ -42,6 +41,7 @@ import com.auto.sensing.vo.PageDTO;
 import com.auto.sensing.vo.PageVO;
 import com.auto.sensing.vo.ProjectVO;
 import com.auto.sensing.vo.SearchVO;
+import com.auto.sensing.vo.SensorVO;
 import com.auto.sensing.vo.UserVO;
 
 import lombok.RequiredArgsConstructor;
@@ -97,9 +97,9 @@ public class ProjectController {
 		System.out.println(locationList);
 		model.addAttribute("locationList", locationList);
 
-		Map<Integer, List<SensorDTO>> sensorList = new HashMap<Integer, List<SensorDTO>>();
+		Map<Integer, List<SensorVO>> sensorList = new HashMap<Integer, List<SensorVO>>();
 		for (LocationVO location : locationList) {
-			List<SensorDTO> sensors = sensorService.getSensorList(location.getLocation_sn());
+			List<SensorVO> sensors = sensorService.getSensorList(location.getLocation_sn());
 			sensorList.put(location.getLocation_sn(), sensors);
 		}
 
@@ -213,7 +213,7 @@ public class ProjectController {
 		session.setAttribute("userinfo", ui);
 
 		// sidebar start
-		List<SensorDTO> sl = sensorService.getSensorList(projectid);
+		List<SensorVO> sl = sensorService.getSensorList(projectid);
 
 		System.out.println(">>>>" + sl.toString());
 		// 우측 sidebar는 무조건 들어가므로 여기를 통과

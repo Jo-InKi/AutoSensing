@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.auto.sensing.dao.SensorDAO;
 import com.auto.sensing.dto.SensorCompanyDTO;
-import com.auto.sensing.dto.SensorDTO;
 import com.auto.sensing.vo.PageVO;
+import com.auto.sensing.vo.SensorVO;
 import com.auto.sensing.vo.SensorReportVO;
 
 @Service
@@ -17,11 +17,11 @@ public class SensorService {
 	@Autowired
 	private SensorDAO sensorDAO;
 
-	public List <SensorDTO> getSensorList(String projectid)	{
+	public List <SensorVO> getSensorList(String projectid)	{
 		return sensorDAO.selectSensorList(projectid);
 	}
 	
-	public List <SensorDTO> selectSensorListByPage(PageVO page)	{
+	public List <SensorVO> selectSensorListByPage(PageVO page)	{
 		return sensorDAO.selectSensorListByPage(page);
 	}
 	
@@ -29,23 +29,31 @@ public class SensorService {
 		return sensorDAO.selectSensorCntByPage(page);
 	}
 	
-	public List <SensorDTO> getSensorList(int location_sn)	{
+	public List <SensorVO> getSensorList(int location_sn)	{
 		return sensorDAO.selectSensorList(location_sn);
 	}
 	
 	public List <SensorReportVO> getSensorReport (String sensorid, long channel, String sdatetime, String edatetime)	{
 		return sensorDAO.getSensorReport(sensorid, channel, sdatetime, edatetime);
 	}
+	
+	public List <SensorReportVO> selectSensorReportByPage (PageVO page)	{
+		return sensorDAO.selectSensorReportByPage( page);
+	}
+	
+	public int selectSensorReportCntByPage (PageVO page)	{
+		return sensorDAO.selectSensorReportCntByPage(page);
+	}
 
-	public long insertSensor(SensorDTO sensorDTO)	{
+	public long insertSensor(SensorVO sensorDTO)	{
 		return sensorDAO.insertSensor(sensorDTO);
 	}
 
-	public long updateSensor(SensorDTO sensorDTO)	{
+	public long updateSensor(SensorVO sensorDTO)	{
 		return sensorDAO.updateSensor(sensorDTO);
 	}
 
-	public SensorDTO selectSensor (String projectid, String sensorid, long channel)	{
+	public SensorVO selectSensor (String projectid, String sensorid, long channel)	{
 		return sensorDAO.selectSensor(projectid, sensorid, channel);
 	}
 

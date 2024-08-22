@@ -41,6 +41,7 @@
 						<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">
 							<select class="custom-select custom-select form-control form-control-sm" aria-label="Default select example" name="location_sn" id="location_sn" disabled>
+								<option>위치 없음</option>
 								<c:forEach var="location" items="${locationList }">
 									<option value='${location.location_sn }'>${location.location_nm }</option>
 								</c:forEach>

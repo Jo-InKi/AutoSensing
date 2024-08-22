@@ -1,12 +1,8 @@
 package com.auto.sensing.vo;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Setter
-@Getter
-@ToString
+@Data
 public class SensorReportVO {
 	private String	time;
 	private double	aiv;

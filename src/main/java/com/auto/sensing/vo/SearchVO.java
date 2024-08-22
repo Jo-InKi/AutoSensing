@@ -3,13 +3,9 @@ package com.auto.sensing.vo;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.constraints.PastOrPresent;
-
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
@@ -18,17 +14,16 @@ import org.springframework.validation.FieldError;
 public class SearchVO implements Serializable {
     private String keyword;
     private String keywordType;
-    private String group;
-    private String userStatus;
-    private String userRestrict;
-    private String type;
-    private String ctgy;
-    private String startTime;
-    private String endTime;
-    private String ip;
-    private String ipType;
-    private String certStartTime;
-    private String certEndTime;
+    private String sensorid;
+    private Long channel;
+    private String sdatetime;
+    private String edatetime;
+    private String time;
+    private Integer intervalday;
+    private String userid;
+    private String projectid;
+    private String projectname;
+    private String company;
     
     
     //유효성 검사 매핑

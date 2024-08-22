@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import com.auto.sensing.dto.SensorDTO;
 import com.auto.sensing.dto.UserInfoDTO;
 import com.auto.sensing.service.LocationService;
 import com.auto.sensing.service.ProjectManService;
@@ -20,6 +19,7 @@ import com.auto.sensing.service.ProjectService;
 import com.auto.sensing.service.SensorService;
 import com.auto.sensing.vo.LocationVO;
 import com.auto.sensing.vo.ProjectVO;
+import com.auto.sensing.vo.SensorVO;
 
 @ControllerAdvice
 public class GlobalControllerAdvice {
@@ -65,15 +65,15 @@ public class GlobalControllerAdvice {
 			model.addAttribute("currProject", projectService.selectProject(userinfo.getProjectid(), null, null));
 			
 			List<LocationVO> locationList = locationService.selectLocationList(userinfo.getProjectid());
-//			System.out.println("manLocationList" + locationList);
+			System.out.println("manLocationList" + locationList);
 			model.addAttribute("manLocationList", locationList);
 			
-			Map<Integer, List<SensorDTO>> sensorList = new HashMap<Integer, List<SensorDTO>>();
+			Map<Integer, List<SensorVO>> sensorList = new HashMap<Integer, List<SensorVO>>();
 			for(LocationVO location : locationList) {
-				List<SensorDTO> sensors = sensorService.getSensorList(location.getLocation_sn());
+				List<SensorVO> sensors = sensorService.getSensorList(location.getLocation_sn());
 				sensorList.put(location.getLocation_sn(), sensors);
 			}
-//			System.out.println("manSensorList" + sensorList);
+			System.out.println("manSensorList" + sensorList);
 			// 우측 sidebar는 무조건 들어가므로 여기를 통과
 			model.addAttribute("manSensorList", sensorList);
 			
