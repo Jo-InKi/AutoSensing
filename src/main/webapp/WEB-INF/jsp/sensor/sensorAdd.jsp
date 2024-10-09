@@ -44,6 +44,26 @@
 						</td>
 					</tr>
 					<tr>
+						<th class="tg-0lax">센서 정보&emsp;</th>
+						<td class="tg-0lax" colspan="2">
+							<div class="input-group mb-3">
+							${compList }
+							<select class="custom-select custom-select form-control form-control-sm" aria-label="Default select example" name="location_sn" id="location_sn">\
+							<option>제조사 선택</option>			
+								<c:forEach var="comp" items="${compList }">
+									<option value='${comp.code }'>${comp.name }</option>
+								</c:forEach>
+							</select>
+							<select class="custom-select custom-select form-control form-control-sm" aria-label="Default select example" name="location_sn" id="location_sn">\
+							<option>종류 선택</option>
+								<c:forEach var="location" items="${locationList }">
+									<option value='${location.location_sn }'>${location.location_nm }</option>
+								</c:forEach>
+							</select>
+							</div>
+						</td>
+					</tr>
+					<tr>
 						<th class="tg-0lax">아이디 및 채널&emsp; <a style="color:darkgrey;" data-bs-toggle="tooltip" data-bs-title="한글, 영문 및 숫자 3자~128자, 특수문자(-,_)만 허용, 중복 불가"><i class="fa-solid fa-circle-info"></i></a></th>
 						<td class="tg-0lax" colspan="2">
 							<div class="input-group mb-3">

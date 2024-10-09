@@ -29,10 +29,12 @@ import com.auto.sensing.dto.ExcelReportDTO;
 import com.auto.sensing.dto.MessageDTO;
 import com.auto.sensing.dto.SensorCompanyDTO;
 import com.auto.sensing.dto.UserInfoDTO;
+import com.auto.sensing.service.CodeService;
 import com.auto.sensing.service.LocationService;
 import com.auto.sensing.service.ProjectService;
 import com.auto.sensing.service.SensorService;
 import com.auto.sensing.utils.ExcelUtils;
+import com.auto.sensing.vo.CodeVO;
 import com.auto.sensing.vo.LocationVO;
 import com.auto.sensing.vo.PageDTO;
 import com.auto.sensing.vo.PageVO;
@@ -58,6 +60,9 @@ public class SensorController {
 	
 	@Autowired
     private final ExcelUtils excelUtils;
+	
+	@Autowired
+	private CodeService codeService;
 
 	
 	@GetMapping("/sensor/sensorlist")
@@ -145,6 +150,8 @@ public class SensorController {
 			// 프로젝트 관리자
 			projectList.addAll(projectService.getProjectList(ui.getUserid()));
 		}
+		List<CodeVO> compList = codeService.selectCodeListByClass("SensorCompany");
+		model.addAttribute("compList", compList);
 
 		List<LocationVO> locationList = locationService.selectLocationList(projectList.get(0).getProjectid());
 		System.out.println("sensorAdd > locationList : " + locationList);
